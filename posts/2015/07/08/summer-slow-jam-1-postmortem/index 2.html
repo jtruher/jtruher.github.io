@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Summer Slow Jam 1 Postmortem :: Half-Bit Software</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="It&amp;rsquo;s been awhile! I missed each and every one of you. At least I haven&amp;rsquo;t been sitting on my thumbs during my long-ish silence. Promise!
+Before we get too far, here&amp;rsquo;s the page for the game!
+" />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/posts/2015/07/08/summer-slow-jam-1-postmortem/" />
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-31657590-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/blue.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="/img/favicon/blue.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  <meta name="twitter:site" content="" />
+
+<meta name="twitter:creator" content="" />
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Summer Slow Jam 1 Postmortem :: Half-Bit Software">
+<meta property="og:description" content="It&amp;rsquo;s been awhile! I missed each and every one of you. At least I haven&amp;rsquo;t been sitting on my thumbs during my long-ish silence. Promise!
+Before we get too far, here&amp;rsquo;s the page for the game!
+" />
+<meta property="og:url" content="/posts/2015/07/08/summer-slow-jam-1-postmortem/" />
+<meta property="og:site_name" content="Summer Slow Jam 1 Postmortem" />
+
+  
+    <meta property="og:image" content="/img/favicon/blue.png">
+  
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2015-07-08 18:42:00 -0700 PDT" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Half-Bit Software
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+        
+          <li><a href="/apps">Apps</a></li>
+        
+      
+        
+          <li><a href="/games">Games</a></li>
+        
+      
+        
+          <li><a href="/now">Now</a></li>
+        
+      
+        
+          <li><a href="/posts">Posts</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+      
+        <li><a href="/apps">Apps</a></li>
+      
+    
+      
+        <li><a href="/games">Games</a></li>
+      
+    
+      
+        <li><a href="/now">Now</a></li>
+      
+    
+      
+        <li><a href="/posts">Posts</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/posts/2015/07/08/summer-slow-jam-1-postmortem/">Summer Slow Jam 1 Postmortem</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2015-07-08 [Updated: 2015-07-08]
+      </span>
+    
+    
+  </div>
+
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <p>It&rsquo;s been awhile!  I missed each and every one of you.  At least I haven&rsquo;t been sitting on my thumbs during my long-ish silence.  Promise!</p>
+<p>Before we get too far, here&rsquo;s the <a href="http://jtruher.itch.io/3720-1">page for the game</a>!</p>
+<p>So, PIGSquad, a local group of gamedev enthusiasts, is pretty great.  Recently, they started this neat Summer Slow Jams thingie - each month this summer is a different jam with a different theme (or set of themes).  I like game jams, but most of the 48/72 hour ones are a bit too rushed for me.  Family obligations make it difficult to really focus, too.  A week, on the other hand. . .</p>
+<p>A week is a pretty healthy amount of time.  The general theme was &ldquo;something you can showcase&rdquo; and the game-specific themes were: seed, spirits, in the fast lane, explosions(!), brewfest, guilty pleasures, wild west, and man vs machine.  Most of these didn&rsquo;t really say much to me, and the overall prompt of a showcase-worthy game was a bigger barrier than the game themes, honestly.</p>
+<p>(One interesting thing about the themes - at least two of them are total gimmes.  Guilty Pleasures and Explosions pretty much let you build whatever the hell you want - what game couldn&rsquo;t use more explosions?  It was a neat trick to make it easier for everyone to contribute and come up with something.)</p>
+<p>First off, before you can really start on anything, you have to, uh, think about what the hell you&rsquo;re doing, right?  For jams, I usually just sit and stare at the theme for awhile and waited for stuff to fall out.  Seed, spirits, brewfest, and guilty pleasures didn&rsquo;t yield much immediately.  I had a neat hook for man vs machine that was basically a cyborg metroidvania with some of the corruption mechanics from Breath of Fire: Dragon Quarter - you had rad robo-abilities, but using them made you more inhuman.  I stopped myself at &lsquo;metroidvania&rsquo; and filed that away for later.</p>
+<p>Which left only a few more options.  I had a hook for wild west: basically, a timing/reaction game with two players, where one had to move an analog stick in a certain way to draw a pistol, aim, and fire, but it felt too fiddly and didn&rsquo;t strike me as particulary &ldquo;showcaseable&rdquo;.  Yes, that&rsquo;s a word, as of now.</p>
+<p>In The Fast Lane was the first thing I ended up building a prototype for.  I had the idea of doing a Grandma Simulator, where you&rsquo;re an old lady sitting in the fast lane, oblivious to the traffic crashing behind you.  It seemed a little cruel and mean, and again, not all that showcaseable.  (My standards on what&rsquo;s worth showcasing might, upon reflection, be a little bit high.)  I kept thinking about it and ended up doing a kind of Road Rage simulator, instead.  I wired up simple boxes with basic movement to fake up what actual freeway traffic was like.  It worked, but it didn&rsquo;t strike me as particularly zazzy, so I shelved it.</p>
+<p>Time from first code written to discard: maybe a day or so?  On a 48h jam, I probably would&rsquo;ve just had to stick out the crappy prototype, but I knew I had a bit more time to let things noodle and build.  Probably a good thing, too, given how fiddly the cars felt.  Tuning physics for game feel is tricky, and adding decent AI drivers felt like a big challenge.</p>
+<p>It was Tuesday before I settled on a different idea, going with something else I thought of on the first night of the jam, using the theme of Explosions instead.  I had pretty decent shmup sprites, and a fairly good grasp of what makes those fun to play, so I settled on a cooperative Asteroid Field Navigation game, with a dash of Star Wars in-joke to boot.  3720 : 1 (3720 to 1) was born-ish!</p>
+<p>It didn&rsquo;t hurt that I&rsquo;d, more or less, done this already before.  A shmup that I&rsquo;ve been writing since the Kennedy Administration had a neat asteroid field mechanic, where occasionally these white ping-pong balls of death and sadness would rain down on you and the aliens.  Dodging them was fun and shooting them was fun - why not make a whole game around that one mechanic?  It seemed like it&rsquo;d work.  Scaling back weapon effectiveness and making it a team effort could help keep the game interesting and challenging.</p>
+<p>Which meant that I had to get to work, and work I did!  Though, looking back, not nearly as much as I should have.  The fun umbrella of personal issues kept me from being as productive as I ought to have been, leading to some last-minute issues.  Things got done, but not up to my usually high standards.  This being a jam is no reason for clumsiness or cludginess.</p>
+<p>My choice of tools were probably the thing that really saved me.  I used Pixatronic to generate my spaceship sprites and the asteroids, Pixelmator for the rad parallax starfield (probably my favorite part of the whole shebang), bfxr for sound effects, Garage Band for the music and, last but absolutely not least, luxe for the engine.</p>
+<p>Garage Band is a little cheesy, but the track for that turned out pretty well, too.  Figuring out how to put together simple loops was fun, and completely worth the half-hour invested.  This is a tool I&rsquo;ll absolutely use again the next time around.  Moving forward, I&rsquo;d like to add a few more loops to alternate between, rather than just an intro and a single loop.  Variation is good, and making different loops is as simple as toggling channels on and off.</p>
+<p>Luxe let me put together everything with remarkable speed and not a whole heck of a lot of code.  How much code, you ask?  This much!</p>
+<pre><code>-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+haXe                             7            242             74           1003
+JSON                             1              0              0             98
+-------------------------------------------------------------------------------
+SUM:                             8            242             74           1101
+-------------------------------------------------------------------------------
+</code></pre><p>Note that little chunk of JSON!  Another thing I&rsquo;m pretty happy with is having a set of ships, loaded from a file!  It&rsquo;s odd where the low bars and the high bars are, huh?  It&rsquo;s something I wanted to do on bullet heck for ages, and just couldn&rsquo;t handle, or couldn&rsquo;t get around to it.  C&rsquo;est la vie.</p>
+<p>Before I get too much further, remember the theme I&rsquo;d chosen: Explosions!  I had, uh, one.  It wasn&rsquo;t a bad one - a simple circle that appears and shrinks, with a bunch of squarish particles flying everywhere.  Probably not the worst explosion in the world, but it could have done with a lot more polish and tweaking.  This is an area I&rsquo;d definitely like to give more attention going forward, particularly when it comes to ships exploding.  They should knock asteroids around when they go kaboom!  At least I&rsquo;ve got screen shake.</p>
+<p>Going into the big jam demo night, I had a main menu screen, a ship selector screen (for up to 4 players) and a game screen.  Each worked - mostly.  The ship selector had a few bugs, and there were a few little issues with the game, too.  I&rsquo;m proud that I was able to get them fixed mid-jam-demo, but less proud that I let them slip at all.  One of the things I&rsquo;ve been reluctant to do, with jams, is commit to working in a team.  I&rsquo;ve always been concerned that I won&rsquo;t be able to work fast enough, or won&rsquo;t be able to contribute enough.</p>
+<p>Next time, however, my plan is to take on a team of friends and have them be extra sets of eyeballs.  This experience is some proof that I can push something decent enough out without completely driving myself mad.  Everything I caught in the last few hours could&rsquo;ve been spotted earlier - with another set of eyes, or more people.  Given the next jam topic is going to be multiplayer games, all the more reason to get more people involved.  The fact that I&rsquo;ve already written a multiplayer game for a jam (partially unintentionally) only helps my case.</p>
+<p>What&rsquo;s more, on the final demo night, I&rsquo;ll be able to have other people around to talk and show off the work.  I absolutely suck at self-promotion and talking about my work, so this is going to be a huge boon to me.  I dreaded showing it to people, and really hope the next time around goes even better than this time.</p>
+<p>The mechanics of scoring could have used a bit of help and explanation.  Basically, you earn points (parsecs) based on how far forward the furthest ship is.  The gameplay idea was to have someone in a quick ship towards the more dangerous part of the asteroid field, where fast reflexes were most necessary, and have the other players hang back and try to shoot asteroids out of their path.  There isn&rsquo;t much of a visual explanation of this effect - probably something added to the score bar would help in that regard.</p>
+<p>Knowing which ships to pick is also a bit of a challenge.  The star explanations for ship capabilities are. . .well, that was one of the last things I did, on the day of the jam.  I was throwing numbers into JSON and hoping nothing broke.  More work on ship balance is going to be necessary to call this actually finished and done.</p>
+<p>At the end of the day, I&rsquo;m pretty darn happy with how this project turned out - happy enough to actually post it for people to fiddle with.  I learned a lot about working with luxe, making music, not leaving things until the last minute (cough, cough) and just putting together a general framework for more of these types of games.  The general blocks and chunks are going to be really straightforward to pull out for the next multiplayer work.</p>
+<p>If you&rsquo;d like to try it, head to my <a href="http://jtruher.itch.io">itch page</a> to give 3720:1 a try.  It&rsquo;s still a little clumsy in a lot of ways, but I&rsquo;m still happy with how it turned out.  Feedback is always welcome, and the best place to hit me is probably my <a href="http://twitter.com/jtruher">twitter</a>.</p>
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="/posts/2015/07/09/slow-jam-1-technical-postmortem/">
+                <span class="button__icon">←</span>
+                <span class="button__text">Slow Jam 1: Technical Postmortem</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="/posts/2015/04/28/whats-a-game/">
+                <span class="button__text">What&#39;s a Game?</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2020 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

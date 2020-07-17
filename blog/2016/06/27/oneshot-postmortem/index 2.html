@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Oneshot Postmortem :: Half-Bit Software</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="I finished another jam, this time making oneshot!
+What Is It It&amp;rsquo;s a little arena-y shooter thing, I guess? 2-4 people jump around in a little room and try to shoot each other. Everyone only gets one bullet before having to scramble for another one.
+What Went Right Finished! It&amp;rsquo;s done, and playable, and doesn&amp;rsquo;t seem to blow up! Kudos, me.
+Simple! I stuck to the bounds of the theme, once again bolstered by a technical, rather than creative, limitation." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/blog/2016/06/27/oneshot-postmortem/" />
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-31657590-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/blue.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="/img/favicon/blue.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  <meta name="twitter:site" content="" />
+
+<meta name="twitter:creator" content="" />
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Oneshot Postmortem :: Half-Bit Software">
+<meta property="og:description" content="I finished another jam, this time making oneshot!
+What Is It It&amp;rsquo;s a little arena-y shooter thing, I guess? 2-4 people jump around in a little room and try to shoot each other. Everyone only gets one bullet before having to scramble for another one.
+What Went Right Finished! It&amp;rsquo;s done, and playable, and doesn&amp;rsquo;t seem to blow up! Kudos, me.
+Simple! I stuck to the bounds of the theme, once again bolstered by a technical, rather than creative, limitation." />
+<meta property="og:url" content="/blog/2016/06/27/oneshot-postmortem/" />
+<meta property="og:site_name" content="Oneshot Postmortem" />
+
+  
+    <meta property="og:image" content="/img/favicon/blue.png">
+  
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2016-06-27 16:01:00 -0700 PDT" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Half-Bit Software
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+        
+          <li><a href="/apps">Apps</a></li>
+        
+      
+        
+          <li><a href="/games">Games</a></li>
+        
+      
+        
+          <li><a href="/now">Now</a></li>
+        
+      
+        
+          <li><a href="/posts">Posts</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+      
+        <li><a href="/apps">Apps</a></li>
+      
+    
+      
+        <li><a href="/games">Games</a></li>
+      
+    
+      
+        <li><a href="/now">Now</a></li>
+      
+    
+      
+        <li><a href="/posts">Posts</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/blog/2016/06/27/oneshot-postmortem/">Oneshot Postmortem</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2016-06-27 [Updated: 2016-06-27]
+      </span>
+    
+    
+  </div>
+
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <p>I finished another <a href="http://itch.io/jam/simple">jam</a>, this time making <a href="http://jtruher.itch.io/oneshot">oneshot</a>!</p>
+<h4 id="what-is-it">What Is It<a href="#what-is-it" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>It&rsquo;s a little arena-y shooter thing, I guess?  2-4 people jump around in a little room and try to shoot each other.  Everyone only gets one bullet before having to scramble for another one.</p>
+<h4 id="what-went-right">What Went Right<a href="#what-went-right" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p><em>Finished!</em>  It&rsquo;s done, and playable, and doesn&rsquo;t seem to blow up!  Kudos, me.</p>
+<p><em>Simple!</em>  I stuck to the bounds of the theme, once again bolstered by a technical, rather than creative, limitation.</p>
+<h4 id="what-maybe-kinda-didnt-go-great">What Maybe Kinda Didn&rsquo;t Go Great<a href="#what-maybe-kinda-didnt-go-great" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p><em>Music!</em>  Specifically, the lack thereof.  This is usually one of the things I leave until the very end, and in this case, it bit me a little.  I had a few beats going, but most of it was pretty godawful.  Here, no music was far better than the noise I was making</p>
+<p><em>Stages!</em>  Because of the limitations of the jam (5 assets, no more) I wanted to set up a bunch of different levels on just one Tiled map, using camera position to set whatever &lsquo;stage&rsquo; is presently in use.  That would&rsquo;ve taken more UI and more smarts around picking that stage, though, so it got punted as well.</p>
+<p><em>Playtesting!</em>  Man, this really didn&rsquo;t happen.  Turns out, making a multiplayer game is hard if you&rsquo;re not throwing it at people to poke at.  For all I know, this is actually pretty fun, but I haven&rsquo;t found out yet.</p>
+<p><em>Juice!</em>  I know, I know, this is kind of falling out of fashion, but it really could do with a bit more zazz.  Maybe particles that fly out when you jump, or screenshake when you zap a fool.  Something!  It could use a lot more stuff filling in the cracks.</p>
+<h4 id="final-thoughts">Final Thoughts<a href="#final-thoughts" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>This one&rsquo;s kinda tricky.</p>
+<p>I think I liked the idea way more before I started fiddling with it.  It started out as a kind of dual-stick shooter with only one stick: aiming was based on the direction of travel.  I wasn&rsquo;t sure that this&rsquo;d be all that much fun to play, as it seemed like you&rsquo;d be jousting, or something along those lines.  You end up hoping to be pointed in the right direction, and that didn&rsquo;t sound too fun.</p>
+<p>Instead, you&rsquo;re just kind of hoping to have a clear horizontal line of sight with an enemy when you pew pew a laser.  I don&rsquo;t know if that&rsquo;s better, but it seems a lot simpler in terms of demands on the player.  Different maps would likely help a lot in this situation, as would bigger maps.  If I end up spinning more on this, it&rsquo;ll be one of the first things I try, along with a lot of playtesting.</p>
+<p>Overall, I&rsquo;m pretty happy with it.  Moving feels kinda goofy and fun, at least playing on a keyboard.  Gamepad might be way more frustrating.</p>
+<p>I&rsquo;m glad I did it, which is probably a good sign!</p>
+
+      </div></div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2020 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

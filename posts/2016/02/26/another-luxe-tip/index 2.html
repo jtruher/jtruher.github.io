@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Another Luxe Tip :: Half-Bit Software</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="I didn&amp;rsquo;t expect to write more of these, but here I am! I wanted to document a bit of interesting behavior I found in the process of building/rebuilding a shmup.
+I had this cool effect for making a sprite kind of flicker and glow a bit by adding a duplicate and making it expand and contract rapidly. I think the old way in SpriteKit used a parent/child relationship with an SKAction for the animation." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/posts/2016/02/26/another-luxe-tip/" />
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-31657590-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/blue.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="/img/favicon/blue.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  <meta name="twitter:site" content="" />
+
+<meta name="twitter:creator" content="" />
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Another Luxe Tip :: Half-Bit Software">
+<meta property="og:description" content="I didn&amp;rsquo;t expect to write more of these, but here I am! I wanted to document a bit of interesting behavior I found in the process of building/rebuilding a shmup.
+I had this cool effect for making a sprite kind of flicker and glow a bit by adding a duplicate and making it expand and contract rapidly. I think the old way in SpriteKit used a parent/child relationship with an SKAction for the animation." />
+<meta property="og:url" content="/posts/2016/02/26/another-luxe-tip/" />
+<meta property="og:site_name" content="Another Luxe Tip" />
+
+  
+    <meta property="og:image" content="/img/favicon/blue.png">
+  
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2016-02-26 18:32:00 -0800 PST" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Half-Bit Software
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+        
+          <li><a href="/apps">Apps</a></li>
+        
+      
+        
+          <li><a href="/games">Games</a></li>
+        
+      
+        
+          <li><a href="/now">Now</a></li>
+        
+      
+        
+          <li><a href="/posts">Posts</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+      
+        <li><a href="/apps">Apps</a></li>
+      
+    
+      
+        <li><a href="/games">Games</a></li>
+      
+    
+      
+        <li><a href="/now">Now</a></li>
+      
+    
+      
+        <li><a href="/posts">Posts</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/posts/2016/02/26/another-luxe-tip/">Another Luxe Tip</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2016-02-26 [Updated: 2016-02-26]
+      </span>
+    
+    
+  </div>
+
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <p>I didn&rsquo;t expect to write more of these, but here I am!  I wanted to document a bit of interesting behavior I found in the process of building/rebuilding a shmup.</p>
+<p>I had this cool effect for making a sprite kind of flicker and glow a bit by adding a duplicate and making it expand and contract rapidly.  I think the old way in SpriteKit used a parent/child relationship with an SKAction for the animation.  In luxe, the way I&rsquo;m doing it is by attaching a component to the base sprite.</p>
+<p>This component is fairly simple.  I build a sprite, attach it to its parent via the parent property (so moving it by hand is unnecessary), then add a few animations.  I&rsquo;ve already learned that <code>onremoved()</code> is the right place to do teardown, so I destroy the sprite in there and all&rsquo;s well, right?  Not quite.</p>
+<p>The extra wrinkle here is that I&rsquo;ve got a timer that fires after a few seconds to remove the component.  Simple and straightforward - <code>entity.remove('flicker');</code> - until I tried to run it.  There&rsquo;s a couple of annoying subtle bugs in here that made me sad.</p>
+<p>The first is the parent-child relationship built from the sprite.  The lifecycle of a sprite is this, during destroy.  First, destroy yourself, then loop through and destroy your children.  This means I&rsquo;m double-destroying my flicker sprite!  Dangit.  The solution?  Don&rsquo;t add it as a child, and manually update position in <code>update()</code>.</p>
+<p>The second is that timer.  See, there&rsquo;s a problem there, too: what happens if you kill the parent before the timer fires?  Everything gets cleaned up properly, but then you try to call <code>entity.remove('flicker')</code> and - boom, again!  Dangit.  The fix here was to save my scheduled timer and tell it to stop in <code>onremoved()</code>.  Both reasonably simple fixes, but real head-scratchers as I was working through the issues.  This isn&rsquo;t even a particularly complicated situation, but making simple mistakes really bit me in the ass.</p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="/posts/2016/03/01/target-action-in-luxe/">
+                <span class="button__icon">←</span>
+                <span class="button__text">Target-Action in Luxe</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="/posts/2016/02/16/little-luxe-tips/">
+                <span class="button__text">Little Luxe Tips</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2020 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>
