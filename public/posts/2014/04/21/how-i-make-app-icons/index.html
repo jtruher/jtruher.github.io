@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>How I Make App Icons :: Half-Bit Software</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Art is a pain in the butt. I flinch whenever I have to do anything substantial any kind of image editor - Pixelmator, Photoshop, or whatever. It&amp;rsquo;s always been kind of a goal to minimize the number and size of assets in my app bundle. In general, smaller apps are good for everyone.
+For The Dungeon, one of the few outright app rejections was because my app icon didn&amp;rsquo;t match my big-icon. This kind of surprised and annoyed me at the time, but now I feel like Apple was probably doing me a favor. For Panic Attack, I wanted to try something different with my icons, and render them in code rather than doing anything in an art program.
+Which brings me to today! I&amp;rsquo;ve been working on a pixel editor for far, far too long a little while, and finally got around to putting together an icon for it. I&amp;rsquo;m doing it all in code with pretty simple, straightforward Core Graphics calls. It might not be all that optimal, but it lets me specify sizes and point/pixel scaling at whim, which makes editing and regenerating all my icons at all required sizes remarkably painless.
+" />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/posts/2014/04/21/how-i-make-app-icons/" />
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-31657590-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/blue.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="/img/favicon/blue.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  <meta name="twitter:site" content="" />
+
+<meta name="twitter:creator" content="" />
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="How I Make App Icons :: Half-Bit Software">
+<meta property="og:description" content="Art is a pain in the butt. I flinch whenever I have to do anything substantial any kind of image editor - Pixelmator, Photoshop, or whatever. It&amp;rsquo;s always been kind of a goal to minimize the number and size of assets in my app bundle. In general, smaller apps are good for everyone.
+For The Dungeon, one of the few outright app rejections was because my app icon didn&amp;rsquo;t match my big-icon. This kind of surprised and annoyed me at the time, but now I feel like Apple was probably doing me a favor. For Panic Attack, I wanted to try something different with my icons, and render them in code rather than doing anything in an art program.
+Which brings me to today! I&amp;rsquo;ve been working on a pixel editor for far, far too long a little while, and finally got around to putting together an icon for it. I&amp;rsquo;m doing it all in code with pretty simple, straightforward Core Graphics calls. It might not be all that optimal, but it lets me specify sizes and point/pixel scaling at whim, which makes editing and regenerating all my icons at all required sizes remarkably painless.
+" />
+<meta property="og:url" content="/posts/2014/04/21/how-i-make-app-icons/" />
+<meta property="og:site_name" content="How I Make App Icons" />
+
+  
+    <meta property="og:image" content="/img/favicon/blue.png">
+  
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2014-04-24 18:43:00 -0700 PDT" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Half-Bit Software
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+        
+          <li><a href="/apps">Apps</a></li>
+        
+      
+        
+          <li><a href="/games">Games</a></li>
+        
+      
+        
+          <li><a href="/now">Now</a></li>
+        
+      
+        
+          <li><a href="/posts">Posts</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+      
+        <li><a href="/apps">Apps</a></li>
+      
+    
+      
+        <li><a href="/games">Games</a></li>
+      
+    
+      
+        <li><a href="/now">Now</a></li>
+      
+    
+      
+        <li><a href="/posts">Posts</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/posts/2014/04/21/how-i-make-app-icons/">How I Make App Icons</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2014-04-24 [Updated: 2014-04-24]
+      </span>
+    
+    
+  </div>
+
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <p>Art is a pain in the butt.  I flinch whenever I have to do anything substantial any kind of image editor - Pixelmator, Photoshop, or whatever.  It&rsquo;s always been kind of a goal to minimize the number and size of assets in my app bundle.  In general, smaller apps are good for everyone.</p>
+<p>For The Dungeon, one of the few outright app rejections was because my app icon didn&rsquo;t match my big-icon.  This kind of surprised and annoyed me at the time, but now I feel like Apple was probably doing me a favor.  For Panic Attack, I wanted to try something different with my icons, and render them in code rather than doing anything in an art program.</p>
+<p>Which brings me to today!  I&rsquo;ve been working on a pixel editor for <del>far, far too long</del> a little while, and finally got around to putting together an icon for it.  I&rsquo;m doing it all in code with pretty simple, straightforward Core Graphics calls.  It might not be all that optimal, but it lets me specify sizes and point/pixel scaling at whim, which makes editing and regenerating all my icons at all required sizes remarkably painless.</p>
+<p>Let&rsquo;s start small.  We&rsquo;re just going to start with a few things of importance, to me.  We&rsquo;re going to turn off antialiasing to get nice, crisp lines and turn off interpolation to make sure things that have to be scaled up end up looking nice as well.  The general pattern is as follows: make a graphics context, do some drawing, then pull it out and close your context.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-objectivec" data-lang="objectivec">    UIGraphicsBeginImageContextWithOptions(size, YES, scale);
+    CGContextRef ctx <span style="color:#f92672">=</span> UIGraphicsGetCurrentContext();
+    CGContextSetAllowsAntialiasing(ctx, false);
+    CGContextSetInterpolationQuality(ctx, kCGInterpolationNone);
+
+    <span style="color:#75715e">/* Drawing goes here! */</span>
+
+    UIImage<span style="color:#f92672">*</span> finalImage <span style="color:#f92672">=</span> UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+</code></pre></div>
+  <img src="/img/icon-step-1.png"  class="left"  style="border-radius: 8px; float:left; margin: 10px;"  />
+
+
+<!-- raw HTML omitted -->
+<p>Okay!  So we&rsquo;ve got something now.  Neat!  Let&rsquo;s draw something other than plain black.  I happen to have this cheerful little robot guy, so let&rsquo;s draw him.  Remember - drawing code goes with that little comment up above.  Black is pretty boring, so let&rsquo;s add a happy little robot!</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-objectivec" data-lang="objectivec">    UIImage<span style="color:#f92672">*</span> robot <span style="color:#f92672">=</span> [UIImage imageNamed:<span style="color:#e6db74">@&#34;radrobot.png&#34;</span>];
+    [robot drawInRect:robotRect];
+</code></pre></div>
+  <img src="/img/icon-step-3.png"  class="left"  style="border-radius: 8px; float:left; margin: 10px;"  />
+
+
+<!-- raw HTML omitted -->
+<p>Black is pretty boring, though.  Let&rsquo;s do a really simple background of squares.  One of the <a href="/blog/2013/08/02/waterfight-pre-mortem/">things</a> that turned out kind of neat back with an earlier prototype was using HSB for neat little grids of faintly-different squares, so let&rsquo;s use a similar technique to get a rad background going.</p>
+<p>What are we actually about to do?  Well, we decide that we want a certain number of chunks, then we loop over our size by certain amounts.  We pick a color, plunk down a rectangle in our graphics context, then repeat until the whole thing is filled.  There&rsquo;s a subtle bug here, but that&rsquo;ll be left as an exercise to the reader.  One &lsquo;nice&rsquo; thing about this is, because our output is good, we don&rsquo;t much care about whether the code is &lsquo;correct&rsquo;.  (I promise: it probably isn&rsquo;t, but it&rsquo;s more than good enough to keep moving forward.)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-objectivec" data-lang="objectivec">    <span style="color:#66d9ef">int</span> chunks <span style="color:#f92672">=</span> size.width <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>;
+
+    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> x <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; x <span style="color:#f92672">&lt;</span> size.width; x <span style="color:#f92672">+=</span> size.width <span style="color:#f92672">/</span> chunks) {
+        <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> y <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; y <span style="color:#f92672">&lt;</span> size.height; y <span style="color:#f92672">+=</span> size.height <span style="color:#f92672">/</span> chunks) {
+            [[UIColor colorWithHue:<span style="color:#ae81ff">208.0</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">360.0</span> saturation:<span style="color:#ae81ff">0.25</span> brightness:arc4random_uniform(<span style="color:#ae81ff">32</span>) <span style="color:#f92672">/</span> <span style="color:#ae81ff">32.0</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">0.125</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">0.725</span> alpha:<span style="color:#ae81ff">1.0</span>] set];
+            CGRect target <span style="color:#f92672">=</span> CGRectMake(x <span style="color:#f92672">*</span> size.width <span style="color:#f92672">/</span> chunks, y <span style="color:#f92672">*</span> size.height <span style="color:#f92672">/</span> chunks, size.width <span style="color:#f92672">/</span> chunks <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span>, size.height <span style="color:#f92672">/</span> chunks <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span>);
+            CGContextFillRect(ctx, target);
+        }
+    }
+</code></pre></div>
+  <img src="/img/icon-step-4.png"  class="left"  style="border-radius: 8px; float:left; margin: 10px;"  />
+
+
+<!-- raw HTML omitted -->
+<p>This is actually looking pretty good, but it&rsquo;s a bit flat and uninteresting.  A simple radial gradient might be just the ticket - or a linear one, even.  I&rsquo;ll leave that as an exercise for the reader.  Unfortunately, this is one of the more complicated, less-obvious bits of this whole mess.  I mean, we&rsquo;ve got straight-up RGB values thrown into some array, color spaces, and yuck.  This might be one of the right places to have drawn a simple radial gradient in Pixelmator, <code>drawInRect:</code> the image and called it a day.</p>
+<p>{%img right /images/icon-step-2.png %}
+This is just a shot of the squares, for sake of comparison.  The individual colors and squares don&rsquo;t much matter, because the goal is really just a sense of depth.  It&rsquo;s pretty easy to tweak the <code>arc4random_uniform(32)</code> and multipliers to adjust your color ranges.  I reference <a href="http://hslpicker.com">this picker</a> a ton to make sure I have some sense of what I&rsquo;m going to get on the other side.  Sometimes, though, I just tweak, test and rebuild until I get something appealing.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-objectivec" data-lang="objectivec">    CGGradientRef myGradient;
+    size_t num_locations <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;
+    CGFloat locations[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">=</span> { <span style="color:#ae81ff">0.0</span>, <span style="color:#ae81ff">1.0</span> };
+    CGFloat components[<span style="color:#ae81ff">8</span>] <span style="color:#f92672">=</span> { <span style="color:#ae81ff">1.0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0.5</span>,  <span style="color:#75715e">// Start color
+</span><span style="color:#75715e"></span>        <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.5</span> }; <span style="color:#75715e">// End color
+</span><span style="color:#75715e"></span>
+    CGColorSpaceRef baseSpace <span style="color:#f92672">=</span> CGColorSpaceCreateDeviceRGB();
+    myGradient <span style="color:#f92672">=</span> CGGradientCreateWithColorComponents (baseSpace, components,
+                                                      locations, num_locations);
+
+    CGPoint myStartPoint <span style="color:#f92672">=</span> CGPointMake(size.width <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>, size.height <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>), myEndPoint <span style="color:#f92672">=</span> CGPointMake(size.width <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>, size.height <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>);
+    CGFloat myStartRadius <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.1</span>, myEndRadius <span style="color:#f92672">=</span> size.width;
+    CGContextDrawRadialGradient (ctx, myGradient, myStartPoint,
+                                 myStartRadius, myEndPoint, myEndRadius,
+                                 kCGGradientDrawsBeforeStartLocation);
+
+</code></pre></div>
+  <img src="/img/icon-step-5.png"  class="left"  style="border-radius: 8px; float:left; margin: 10px;"  />
+
+
+<!-- raw HTML omitted -->
+<p>Wow!  That&rsquo;s a lot less flat, and probably something similar to what I&rsquo;m actually going to use for the shipping app.  This method has a number of advantages if you&rsquo;re photoshoppically challenged - but if you&rsquo;ve got an actual graphic designer, this might not be especially practical for you.  At the end of the day, do what you can to make something you&rsquo;re happy with.  That&rsquo;s pretty much the real lesson here.</p>
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="/posts/2014/07/30/wallpaper-silliness/">
+                <span class="button__icon">←</span>
+                <span class="button__text">Wallpaper Silliness</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="/posts/2013/11/01/procedural-content/">
+                <span class="button__text">Procedural Content</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2020 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

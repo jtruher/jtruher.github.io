@@ -76,7 +76,7 @@ googleAnalytics = "UA-31657590-1"
         name = "Now"
         url = "/now"
       [[languages.en.menu.main]]
-        identifier = "about"
+        identifier = "About"
         name = "About"
         url = "/about"
       [[languages.en.menu.main]]

@@ -1,6 +1,6 @@
 +++
 title = "About Half-Bit"
-draft = true
+draft = false
 +++
 
 

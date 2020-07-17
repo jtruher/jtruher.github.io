@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Slow Jam 1: Technical Postmortem :: Half-Bit Software</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Yesterday, I posted up some of my recent thoughts and experiences on the last PIGSquad game jam. It went pretty well, and I&amp;rsquo;m pretty happy with it! This is going to be the big, ugly breakdown of how I actually put the whole thing together.
+And just to repeat myself, here&amp;rsquo;s the page for the game!
+" />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/blog/2015/07/09/slow-jam-1-technical-postmortem/" />
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-31657590-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/blue.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="/img/favicon/blue.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  <meta name="twitter:site" content="" />
+
+<meta name="twitter:creator" content="" />
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Slow Jam 1: Technical Postmortem :: Half-Bit Software">
+<meta property="og:description" content="Yesterday, I posted up some of my recent thoughts and experiences on the last PIGSquad game jam. It went pretty well, and I&amp;rsquo;m pretty happy with it! This is going to be the big, ugly breakdown of how I actually put the whole thing together.
+And just to repeat myself, here&amp;rsquo;s the page for the game!
+" />
+<meta property="og:url" content="/blog/2015/07/09/slow-jam-1-technical-postmortem/" />
+<meta property="og:site_name" content="Slow Jam 1: Technical Postmortem" />
+
+  
+    <meta property="og:image" content="/img/favicon/blue.png">
+  
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2015-07-09 10:59:00 -0700 PDT" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Half-Bit Software
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+        
+          <li><a href="/apps">Apps</a></li>
+        
+      
+        
+          <li><a href="/games">Games</a></li>
+        
+      
+        
+          <li><a href="/now">Now</a></li>
+        
+      
+        
+          <li><a href="/posts">Posts</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+      
+        <li><a href="/apps">Apps</a></li>
+      
+    
+      
+        <li><a href="/games">Games</a></li>
+      
+    
+      
+        <li><a href="/now">Now</a></li>
+      
+    
+      
+        <li><a href="/posts">Posts</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/blog/2015/07/09/slow-jam-1-technical-postmortem/">Slow Jam 1: Technical Postmortem</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2015-07-09 [Updated: 2015-07-09]
+      </span>
+    
+    
+  </div>
+
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <p>Yesterday, I posted up some of my recent thoughts and experiences on the last PIGSquad game jam.  It went pretty well, and I&rsquo;m pretty happy with it!  This is going to be the big, ugly breakdown of how I actually put the whole thing together.</p>
+<p>And just to repeat myself, here&rsquo;s the <a href="http://jtruher.itch.io/3720-1">page for the game</a>!</p>
+<p>I&rsquo;ve mentioned this before, but I&rsquo;ve been doing a lot of work and research with luxe, a game engine built on top of Haxe.  It&rsquo;s all pretty new and different for me, coming primarily from a recent iOS background - but that&rsquo;s for another post.</p>
+<p>Luxe is in alpha, which means it isn&rsquo;t quite finished yet.  Luxe, more importantly, is completely badass.  Damn and blast, I was going to talk about this another time.</p>
+<p>I&rsquo;m not going to cover what I brought up yesterday - we all know it&rsquo;s a spaceship game.  Instead, I&rsquo;ll go into how I actually put this whole thing together, from start to finish, with a bit of a focus on Luxe.  Like with C, Luxe starts you off in Main.  It&rsquo;s the entry point for the whole app (as far as I understand - apologies in advance, __discovery).  For me, it&rsquo;s also where I keep a few important, app-wide things, like where we&rsquo;re at in a state machine, and the starfield background.</p>
+<h4 id="background-starfield">Background Starfield<a href="#background-starfield" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Speaking of which, that background is something that turned out really well.  I&rsquo;m pretty proud of how I put it together, so let&rsquo;s start there.  In Pixelmator, I added noise, tweaked light and dark balance and fiddled with it until I got black with a sea of stars.  From there, I duplicated that layer and ripped out anything black, leaving just stars.  That layer, with just stars and no black background, was duplicated a couple more times.  The trick here is that I went in with the eraser and just swept through it, leaving patches of stars here and there.</p>
+<p>Now, the engine part of things.  Each of those transparent layers gets to live as a texture on its own quad.  Simple uv coordinate manipulation - adding a delta on each frame - makes the texture slide across the quad (or Sprite, if you prefer the luxe term).  Each quad also gets its own delta speed, adding basic parallax.  Finally, I provided a basic setter to Main, the class containing this whole thing, so that any state could change the speed that the game went at.  Simple, straightforward, and pretty clean.</p>
+<h4 id="physics">Physics<a href="#physics" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>One of the physics simulations luxe supports is called Nape.  Nape is pretty darned good, and more than sufficient for my purposes.  Putting it to good use is left as an exercise for the reader, but my general scheme was to put together a couple of simple static boxes: one would keep the player ships from exiting the view, and the other served to clean up any bullets or asteroids that bumped into it.  It was a pretty straightforward system.</p>
+<p>Nape, in particular, is pretty cool because of the rich callbacks system.  I can define certain physics bodies as one type, and others as another, then get a function called when the two bodies interact.  It&rsquo;s how all of my collision works: when two asteroids bump, I spawn a little explosion.  When a bullet hits an asteroid, same thing.  When an asteroid hits a player, explode a lot!  Oh, and kill that poor helpless ship, too.</p>
+<h4 id="input">Input<a href="#input" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Input was pretty straightforward, too.  Luxe comes with an entity component system right out of the box, so I put this to good use.  My InputComponent ended up being a bit of a God Object, which isn&rsquo;t great - but, hey, game jam.  It&rsquo;s okay if things are a bit clunky or poorly designed, as long as it works.  Input holds onto the particular ship&rsquo;s physics body and attaches to the ship&rsquo;s Sprite.  Each frame, I update the sprite&rsquo;s position and rotation based on its physics body.  (This is how asteroids and bullets work, too.)</p>
+<p>One trick that I apply here, I think picked up from <a href="http://www.madgarden.net">@madgarden</a> is to give the acceleration a boost when the player tries to move in the opposite direction of travel.  So, if you&rsquo;re heading right and going fast, then try to go left, give a bit more oomph to the physics impulse until your velocity normalizes.  It makes everything a lot zippier and feels pretty great, once you&rsquo;ve tuned whatever that extra-oomph is.</p>
+<h4 id="data-driven-nonsense">Data-Driven Nonsense<a href="#data-driven-nonsense" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>I think this came up in yesterday&rsquo;s overall post, but going into the last day, I put together a basic json-based data file for ship stats.  This was after I&rsquo;d already gotten the whole game up and running.  This was huge, because it meant I could see where the hardcoded numbers are, and set them up accordingly in the json.  My InputComponent, after it&rsquo;s been loaded, can ask Main about what ship it&rsquo;s made and assign values out of the data file.</p>
+<p>It was almost offensive how well this system worked, and it&rsquo;s something I plan on re-using for other projects.  The only failing: the lack of testing.  If I had my druthers, I&rsquo;d put together something that let me twiddle and toggle game settings on the fly, rather than having a lengthy rebuild/relaunch cycle.  Being able to disable ship death and tweak ship settings in-game would have been huge.  Maybe for the next jam!  (But probably not, knowing me.)</p>
+<h4 id="music">Music<a href="#music" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>This is probably going to earn its own post at some point, but figuring out how to do loops and samples in Garage Band was pretty great.  I stepped through a bunch of their supplied loops, dragged in the ones that sounded good, then set them to loop over a particular interval until I got something I liked.  The one trick that I found handy was to separate an intro from a main game loop.  This seemed like a good way of doing things, because in luxe there&rsquo;s a completion handler for when a sound effect will end.</p>
+<p>That&rsquo;s most of the interesting chunks.  Doing this project in luxe has really gotten me excited again about building stuff, and I&rsquo;m looking forward to the next gamejam in August (July&rsquo;s has a schedule conflict for me, sadly).  I&rsquo;m also looking forward to just having an easier, cross-platformier dev environment.  After being iOS only for so long, being able to blast something out to a bunch of different places feels pretty great.</p>
+      </div></div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2020 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

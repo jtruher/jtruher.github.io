@@ -9,24 +9,12 @@ slug = "2011/05/26/in-case-of-suck"
 
 . . .break face.
 
- 
-
-  
-
- 
-
-One of the scariest feelings ever, when doing something new or creative, involves 
-the finished product.  I mean, what if it's no good?  All that time and effort, 
+One of the scariest feelings ever, when doing something new or creative, involves
+the finished product.  I mean, what if it's no good?  All that time and effort,
 wasted!  For productivity apps, uselessness is terrible.  For business apps, 
 uptime and value for money are key.  For games, that magic F-word, Fun, is 
 critical.  But, hell, how do you know if your stuff sucks or not?  Will it 
 just feel right, or is there something more to it than that?
-
- 
-
-  
-
- 
 
 Really, unless you're smart about getting feedback early and often, it probably 
 will suck.  It'll probably suck more than you could possibly imagine, and it'll 

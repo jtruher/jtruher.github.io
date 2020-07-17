@@ -5,7 +5,7 @@ draft = false
 slug = "2018/09/06/octopath-traveler-1"
 +++
 
-One of my favorite silliest parts of this game revolves around Olberic, a brave knight.  Each playable character has their own way of interacting with the world around them.  The nice priest lady can guide people through life, the trader can buy stuff off of people, and the knight - 
+One of my favorite silliest parts of this game revolves around Olberic, a brave knight.  Each playable character has their own way of interacting with the world around them.  The nice priest lady can guide people through life, the trader can buy stuff off of people, and the knight -
 
 Well.  The knight can walk up to random fools, challenge them to a duel, and beat the everloving shit out of them.
 
