@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Waterfight Pre-Mortem :: Half-Bit Software</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Like a lot of indies and hobbyists, I play around with a lot of prototypes. Most of the time, these don&amp;rsquo;t see the light of day, and for good reason - they&amp;rsquo;re generally awful. It&amp;rsquo;s occurred to me more and more recently, though, that the cone of shamesilence might be more appropriate for, say, Apple, and less appropriate for someone nobody&amp;rsquo;s heard of.
+So with that in mind, I thought it&amp;rsquo;d be a fun exercise to share some of my less-awful fiddlings, on the off-chance that someone finds them interesting." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/blog/2013/08/02/waterfight-pre-mortem/" />
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-31657590-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/blue.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="/img/favicon/blue.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  <meta name="twitter:site" content="" />
+
+<meta name="twitter:creator" content="" />
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Waterfight Pre-Mortem :: Half-Bit Software">
+<meta property="og:description" content="Like a lot of indies and hobbyists, I play around with a lot of prototypes. Most of the time, these don&amp;rsquo;t see the light of day, and for good reason - they&amp;rsquo;re generally awful. It&amp;rsquo;s occurred to me more and more recently, though, that the cone of shamesilence might be more appropriate for, say, Apple, and less appropriate for someone nobody&amp;rsquo;s heard of.
+So with that in mind, I thought it&amp;rsquo;d be a fun exercise to share some of my less-awful fiddlings, on the off-chance that someone finds them interesting." />
+<meta property="og:url" content="/blog/2013/08/02/waterfight-pre-mortem/" />
+<meta property="og:site_name" content="Waterfight Pre-Mortem" />
+
+  
+    <meta property="og:image" content="/img/favicon/blue.png">
+  
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2013-08-02 19:22:00 -0700 PDT" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Half-Bit Software
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+        
+          <li><a href="/apps">Apps</a></li>
+        
+      
+        
+          <li><a href="/games">Games</a></li>
+        
+      
+        
+          <li><a href="/now">Now</a></li>
+        
+      
+        
+          <li><a href="/posts">Posts</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+      
+        <li><a href="/apps">Apps</a></li>
+      
+    
+      
+        <li><a href="/games">Games</a></li>
+      
+    
+      
+        <li><a href="/now">Now</a></li>
+      
+    
+      
+        <li><a href="/posts">Posts</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/blog/2013/08/02/waterfight-pre-mortem/">Waterfight Pre-Mortem</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2013-08-02 [Updated: 2013-08-02]
+      </span>
+    
+    
+  </div>
+
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <p>Like a lot of indies and hobbyists, I play around with a lot of prototypes.  Most of the time, these don&rsquo;t see the light of day, and for good reason - they&rsquo;re generally awful.  It&rsquo;s occurred to me more and more recently, though, that the cone of <!-- raw HTML omitted -->shame<!-- raw HTML omitted -->silence might be more appropriate for, say, Apple, and less appropriate for someone nobody&rsquo;s heard of.</p>
+<p>So with that in mind, I thought it&rsquo;d be a fun exercise to share some of my less-awful fiddlings, on the off-chance that someone finds them interesting.  If nothing else, these are great mistakes to learn from.  There&rsquo;s also the slim chance that they&rsquo;ll encourage me to actually finish them - finishing stuff&rsquo;s always a good thing, even if it&rsquo;s complete garbage.</p>
+<h3 id="initial-motivation">Initial Motivation<a href="#initial-motivation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>{% flickr_image 9423048349 n left &ldquo;An early test with hue shifting.&rdquo; %}</p>
+<p>There was a great article about <a href="http://jeremykun.com/2012/07/29/the-cellular-automaton-method-for-cave-generation/">making caves with cellular automata</a> from. . .sheesh, back in March, I think.  <a href="http://twitter.com/madgarden">@madgarden</a>, one of my many nemeses, wrote a quick little C implementation and pushed a neat little toy game of life up onto the App Store.  When I saw this thing make caves, for some reason, my first thought was how they&rsquo;d look if they were full of water, and you could drop ink into it to see it spread.  You&rsquo;d have a fun little set of restrictions on where the water could go, and a bit of falloff as the ring lost momentum.</p>
+<p>Crackpot idea, huh?  But it seemed like something that&rsquo;d be neat to see working, so I promptly forgot about the idea for a month or two while I was trying to get Panic Attack shipped.  Eventually, I came back to it in the middle of May.  According to screenshots, it looks like I spent about a week playing around with it before interest fizzled.  It looks like this was, more or less, while Panic Attack was in review.  Go figure.</p>
+<h3 id="whatd-i-build">What&rsquo;d I Build?<a href="#whatd-i-build" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>{% flickr_image 9425814028 n right &ldquo;Territorial spread in action.  I like the pretty teal.&rdquo; %}</p>
+<p>What exists now is actually remarkably close to what the original idea was.  You can mark points on a 2d grid of colored cells, taking turns with your opponent in an attempt to control as much of the available space as possible.  Some of the mechanics don&rsquo;t work quite as you&rsquo;d expect, but this is. . .techno. . .something, not water.</p>
+<h3 id="what-went-right-and-why">What Went Right, and Why?<a href="#what-went-right-and-why" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>The cellular automata stuff got hooked up and working really, stupidly fast.  I pretty much have @madgarden to thank for that.  I also tried doing something a little different.  For nerd talk, the game is pretty much just a big grid of CALayers.  I overlap them slightly, such that their borders rest on top of their neighbors.  I offset the colors just slightly on each, fiddling with small deltas on saturation and luminance, and I think it turned out really kind of pretty.</p>
+<p>Doing colors with HSB rather than RGB is something I&rsquo;m probably going to do more and more going forward, particularly in places where I want to keep a fairly distinctive color scheme but want to keep some kind of interesting noise.  This was a trick I first tried playing with on the dumb LD26 project - that&rsquo;ll get one of these pre-mortems, too, at some point.</p>
+<h3 id="what-sucked-and-why">What Sucked, and Why?<a href="#what-sucked-and-why" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>The game itself was kind of slow.  This is because I&rsquo;m doing things in a thickheaded way.  It&rsquo;s definitely not shippable as it stands now, but maybe moving to some of the new iOS7 stuff will make it tolerable.</p>
+<p>The UI/interaction stuff is also godawful.  It was getting better near the end, but it was really hard to tell what the hell was going on, and what various taps would do.  It was barely usable for me, and certainly doesn&rsquo;t pass the Spouse Test.</p>
+<h3 id="whats-next">What&rsquo;s Next?<a href="#whats-next" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Maybe iOS7, but probably nothing.  It looked pretty, at least, so it has that going for it.  I&rsquo;m not even sure there&rsquo;s much of a market for this, so at best it&rsquo;d probably just be a free app.</p>
+
+      </div></div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2020 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

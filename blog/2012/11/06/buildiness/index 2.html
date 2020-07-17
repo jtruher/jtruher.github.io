@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Buildiness :: Half-Bit Software</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="For quite some time now, I&amp;rsquo;ve had a bit of a wild hare about something incredibly stupid. After being pestered a few too many times about getting a TestFlight build while away from my computer, I thought, hey, it&amp;rsquo;d be sweet if I could, from my phone, tell the damned machine to make a new build and push it up to TestFlight.
+So, one weekend when I was particularly full of beans, I gave it a quick, vicious stab.
+" />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/blog/2012/11/06/buildiness/" />
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-31657590-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/blue.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="/img/favicon/blue.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  <meta name="twitter:site" content="" />
+
+<meta name="twitter:creator" content="" />
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Buildiness :: Half-Bit Software">
+<meta property="og:description" content="For quite some time now, I&amp;rsquo;ve had a bit of a wild hare about something incredibly stupid. After being pestered a few too many times about getting a TestFlight build while away from my computer, I thought, hey, it&amp;rsquo;d be sweet if I could, from my phone, tell the damned machine to make a new build and push it up to TestFlight.
+So, one weekend when I was particularly full of beans, I gave it a quick, vicious stab.
+" />
+<meta property="og:url" content="/blog/2012/11/06/buildiness/" />
+<meta property="og:site_name" content="Buildiness" />
+
+  
+    <meta property="og:image" content="/img/favicon/blue.png">
+  
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2012-11-06 20:40:00 -0800 PST" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Half-Bit Software
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+        
+          <li><a href="/apps">Apps</a></li>
+        
+      
+        
+          <li><a href="/games">Games</a></li>
+        
+      
+        
+          <li><a href="/now">Now</a></li>
+        
+      
+        
+          <li><a href="/posts">Posts</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+      
+        <li><a href="/apps">Apps</a></li>
+      
+    
+      
+        <li><a href="/games">Games</a></li>
+      
+    
+      
+        <li><a href="/now">Now</a></li>
+      
+    
+      
+        <li><a href="/posts">Posts</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/blog/2012/11/06/buildiness/">Buildiness</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2012-11-06 [Updated: 2012-11-06]
+      </span>
+    
+    
+  </div>
+
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <p>For quite some time now, I&rsquo;ve had a bit of a wild hare about something incredibly stupid.  After being pestered a few too many times about getting a TestFlight build while away from my computer, I thought, hey, it&rsquo;d be sweet if I could, from my phone, tell the damned machine to make a new build and push it up to TestFlight.</p>
+<p>So, one weekend when I was particularly full of beans, I gave it a quick, vicious stab.</p>
+<p>Thankfully, someone else already solved a hell of a lot of this problem.  My minor contribution is a bit of AppleScript-y magic that fires a script off from an iMessage (which, in light of their reliability, was maybe not my best choice.  Still, it hasn&rsquo;t missed a build so far.)</p>
+<p>What&rsquo;s the practical use of this? For one thing, if I can keep project sizes small (let&rsquo;s say under half a meg) it ends up being faster for me to push everything up via this script, then use TestFlight to install on all of the various devices I&rsquo;m building for.  All of the things I&rsquo;m working on are Universal and support iOS 5.1, so I&rsquo;ve got: a 3GS, a 4, an iPad 1, and a now-horrifically-embarrassingly out of date iPad 3 (which I adore.  Seriously.  It&rsquo;s what I&rsquo;ve been doing all of my blogging on).</p>
+<p>The other, somewhat less silly part about this is that I don&rsquo;t <em>actually</em> need a computer for development.  Well, sure, I need something to go compile some shit, but I don&rsquo;t actually need it with me.  I was inspired by some lunatic&rsquo;s story about ditching his laptop for an iPad/linode server, and this is kind of like the poor man&rsquo;s version of that.  No slight intended to Textastic (which is great) but it doesn&rsquo;t make Obj-C development as easy as Xcode.  Shucks.</p>
+<p>It&rsquo;s sure as hell good enough to muddle about, though, and learning not to depend on newfangled tools is probably a good thing for anyone to learn. It&rsquo;s also not the worst debugging feedback loop I&rsquo;ve ever worked with, though by golly, does it come close.</p>
+<p>First, I started off using the following <a href="https://gist.github.com/2411095">GitHub gist</a>.  It&rsquo;s really what&rsquo;s doing most of the heavy lifting.  It&rsquo;ll clean your builds, make the project, sign with a provisioning profile, then curl it on up to TestFlight.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/bin/sh
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e"># Current as working as of 2012/4/17</span>
+<span style="color:#75715e"># Xcode 4.3.2</span>
+
+PROJECT_ROOT<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/SomeDirWhereYourProjectLives/XXXXXXXX&#34;</span>
+
+WORKSPACE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$PROJECT_ROOT<span style="color:#e6db74">/XXXXXXXX.xcodeproj/project.xcworkspace&#34;</span>
+CONFIG<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;AdHoc&#34;</span>
+SCHEME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;XXXXXXXX&#34;</span>
+SDK<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;iphoneos&#34;</span>
+TARGET<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;XXXXXXXX&#34;</span>
+BUILDDIR<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/build</span>$TARGET<span style="color:#e6db74">&#34;</span>
+OUTPUTDIR<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$BUILDDIR<span style="color:#e6db74">/AdHoc-iphoneos&#34;</span>
+APPNAME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;XXXXXXXX&#34;</span>
+DEVELOPER_NAME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;John Doe (PRTG45V3X)&#34;</span>
+PROVISIONING_PROFILE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$PROJECT_ROOT<span style="color:#e6db74">/XXXXXXXX.mobileprovision&#34;</span>
+
+echo $BUILDDIR
+
+cd $PROJECT_ROOT
+
+echo <span style="color:#e6db74">&#34;********************&#34;</span>
+echo <span style="color:#e6db74">&#34;*     Cleaning     *&#34;</span>
+echo <span style="color:#e6db74">&#34;********************&#34;</span>
+xcodebuild -alltargets clean
+
+<span style="color:#75715e"># echo &#34;********************&#34;</span>
+<span style="color:#75715e"># echo &#34;*     Archiving     *&#34;</span>
+<span style="color:#75715e"># echo &#34;********************&#34;</span>
+<span style="color:#75715e"># xcodebuild -workspace $WORKSPACE -scheme $SCHEME archive</span>
+
+echo <span style="color:#e6db74">&#34;********************&#34;</span>
+echo <span style="color:#e6db74">&#34;*     Building     *&#34;</span> 
+echo <span style="color:#e6db74">&#34;********************&#34;</span>
+xcodebuild -sdk <span style="color:#e6db74">&#34;</span>$SDK<span style="color:#e6db74">&#34;</span> -target $TARGET -configuration <span style="color:#e6db74">&#34;</span>$CONFIG<span style="color:#e6db74">&#34;</span> OBJROOT<span style="color:#f92672">=</span>$BUILDDIR SYMROOT<span style="color:#f92672">=</span>$BUILDDIR
+
+echo <span style="color:#e6db74">&#34;********************&#34;</span>
+echo <span style="color:#e6db74">&#34;*     Signing      *&#34;</span>
+echo <span style="color:#e6db74">&#34;********************&#34;</span>
+xcrun -log -sdk iphoneos PackageApplication -v <span style="color:#e6db74">&#34;</span>$OUTPUTDIR<span style="color:#e6db74">/</span>$APPNAME<span style="color:#e6db74">.app&#34;</span> -o <span style="color:#e6db74">&#34;</span>$OUTPUTDIR<span style="color:#e6db74">/</span>$APPNAME<span style="color:#e6db74">.ipa&#34;</span> -sign <span style="color:#e6db74">&#34;</span>$DEVELOPER_NAME<span style="color:#e6db74">&#34;</span> -embed <span style="color:#e6db74">&#34;</span>$PROVISIONING_PROFILE<span style="color:#e6db74">&#34;</span>
+
+API_TOKEN<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ZZZZZZZZZZZZZZ&#34;</span>
+TEAM_TOKEN<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;YYYYYYYYYYYYYY&#34;</span>
+RELEASE_NOTES<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;TBD&#34;</span>
+
+<span style="color:#75715e"># remove the old zipped dSYM</span>
+rm -rf <span style="color:#e6db74">&#34;</span>$OUTPUTDIR<span style="color:#e6db74">/</span>$APPNAME<span style="color:#e6db74">.app.dSYM.zip&#34;</span>
+<span style="color:#75715e"># zip up the new dSYM, we must cd to where the dSYM is or the zip command will zip up tons of intermediate dirs</span>
+cd $OUTPUTDIR
+zip -r -9 <span style="color:#e6db74">&#34;</span>$OUTPUTDIR<span style="color:#e6db74">/</span>$APPNAME<span style="color:#e6db74">.app.dSYM.zip&#34;</span> <span style="color:#e6db74">&#34;</span>$APPNAME<span style="color:#e6db74">.app.dSYM&#34;</span>
+
+curl http://testflightapp.com/api/builds.json <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  -F file<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;@</span>$OUTPUTDIR<span style="color:#e6db74">/</span>$APPNAME<span style="color:#e6db74">.ipa&#34;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  -F dsym<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;@</span>$OUTPUTDIR<span style="color:#e6db74">/</span>$APPNAME<span style="color:#e6db74">.app.dSYM.zip&#34;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  -F api_token<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$API_TOKEN<span style="color:#e6db74">&#34;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  -F team_token<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$TEAM_TOKEN<span style="color:#e6db74">&#34;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  -F notes<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$RELEASE_NOTES<span style="color:#e6db74">&#34;</span> -v
+
+echo <span style="color:#e6db74">&#34;********************&#34;</span>
+echo <span style="color:#e6db74">&#34;*    Cleaning up   *&#34;</span>
+echo <span style="color:#e6db74">&#34;********************&#34;</span>
+echo $BUILDDIR
+rm -Rf <span style="color:#e6db74">&#34;</span>$BUILDDIR<span style="color:#e6db74">&#34;</span>
+</code></pre></div><p>Also, you might need to do this just before signing, in order to unlock the keychain:</p>
+<pre><code>security unlock-keychain -p YOUR_PASSWORD &quot;$HOME/Library/Keychains/login.keychain&quot;
+</code></pre>
+<p>The trick, for me, is that I keep all of my projects in my Dropbox folder.  I&rsquo;d prefer not to have my build directories live in there, where they&rsquo;ll be muddling with files a bunch, so I have my DerivedData actually spit out into ~/build instead.  (I somehow got this to work through Xcode, too, though I now have no friggin&rsquo; clue how.)</p>
+<p>I&rsquo;ve also got this AppleScript hooked up to fire in Messages on message received events.  It checks against who sent the message in order to only fire the script if I&rsquo;ve asked it to do work.  It&rsquo;d be kind of cool to have a smarter whitelist, but for now, this is good enough.  I&rsquo;ve tried making it a bit smarter to clear out the unread badge count, but my script-fu is not quite strong enough.  Consider it an exercise for the reader!</p>
+<pre><code>using terms from application &quot;Messages&quot;
+	
+    on message received theMessage from theBuddy for theChat
+        -- display dialog (theBuddy's name as string)
+        set whoDidIt to full name of theBuddy
+        -- display alert whoDidIt &amp; who &amp; theMessage &amp; huh
+        if whoDidIt is equal to &quot;Jim Truher&quot; then
+            tell application &quot;Terminal&quot;
+                activate
+                do script &quot;automatedBuildAndUploadToTestflight.sh &quot; &amp; theMessage &amp; &quot;;exit&quot;
+            end tell
+        end if
+		
+    end message received
+	
+end using terms from
+</code></pre>
+<p>After using this system for a few weeks, it&rsquo;s occurred to me that the really neat, useful part about this whole workflow is that I can end up pushing TestFlight builds a hell of a lot more easily now than I could before.  It&rsquo;s really pretty fantastic.</p>
+      </div></div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2020 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>
