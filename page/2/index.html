@@ -179,6 +179,36 @@ if (!doNotTrack) {
     
       <div class="post on-list">
         <h1 class="post-title">
+          <a href="/posts/2016/02/16/little-luxe-tips/">Little Luxe Tips</a>
+        </h1>
+        <div class="post-meta">
+          <span class="post-date">
+            2016-02-16
+          </span>
+          
+        </div>
+
+        
+
+        
+
+        <div class="post-content">
+          <p>I&rsquo;m not dead!  A shock, I know, but between real-life obligations and a decline in my general state of gives-a-crap, my fun little hobby life has suffered in recent months.  Shucks.</p>
+<p>Doesn&rsquo;t mean I can&rsquo;t bounce back, though, right?  Spring 2015-ish, I was on the hunt for something new to tinker with, and I found <a href="http://snowkit.org">this rad stuff</a>.</p>
+<p>First off, a dumb, semi-obvious one.  For anyone loading textures in <code>config</code>, using something like <code>config.preload.textures.push({ id:'assets/playershot.png' });</code> who want nearest neighbor filtering on all of their textures, it&rsquo;s important to call <code>phoenix.Texture.default_filter = phoenix.Texture.FilterType.nearest;</code> <em>before</em> you load anything.  Promise - this&rsquo;ll make you sad and confused otherwise.  Obvious in hindsight and a real forehead-slapper once I figured it out.</p>
+<p>Another important thing to note is that someday (soon?) phoenix is going to go away, replaced with <a href="http://snowkit.org/2015/09/14/snowkit-dev-log-7-embers/">embers</a>.  The API might look similar, and this might still be relevant, but just something to keep in mind.</p>
+<p>I bumped into another forehead-slapper obvious issue with global events and ids.  It&rsquo;s super easy to just <code>Luxe.events.listen('whatever', function() { doRadStuff(); })</code> - but the gotcha here was not holding onto what <code>listen()</code> returns.  Whoopsie.  That&rsquo;s the thing you use later to unlisten to things, ala <code>Luxe.events.unlisten(event_id)</code>.  The worst part?  This is even <a href="http://luxeengine.com/docs/guide.events.html">in the docs</a>!  Bad me.</p>
+<p>The last tip is going to be a bit of a rambler.  Luxe supports the pretty useful entity-component model of design: you&rsquo;ve got your base entity, and you can lump additional behavior onto it via components, which are small little focused nuggets of goodness.  I&rsquo;m coming from an objc/iOS background, which means that I spotted new, init and destroy and thought, aha!  That&rsquo;s clearly the place to put stuff!</p>
+<p>D&rsquo;oh.  Nope.  See, the thing you&rsquo;re attaching your component to isn&rsquo;t quite ready in new - that&rsquo;s just for building stuff up.  Init, too, is a little early - sure, you&rsquo;ll be ready, but if you want to add stuff your component after the fact (adding components to an entity returns that built component - handy for twiddling stuff immediately afterwards) - well, onadded is a better place.  Teardown is similar, as onremoved happens earlier in the destruction lifecycle than ondestroy.</p>
+
+          
+        </div>
+
+        
+      </div>
+    
+      <div class="post on-list">
+        <h1 class="post-title">
           <a href="/posts/2015/07/09/slow-jam-1-technical-postmortem/">Slow Jam 1: Technical Postmortem</a>
         </h1>
         <div class="post-meta">
@@ -193,18 +223,29 @@ if (!doNotTrack) {
         
 
         <div class="post-content">
-          
-          
-          <!-- raw HTML omitted -->
-          
+          <p>Yesterday, I posted up some of my recent thoughts and experiences on the last PIGSquad game jam.  It went pretty well, and I&rsquo;m pretty happy with it!  This is going to be the big, ugly breakdown of how I actually put the whole thing together.</p>
+<p>And just to repeat myself, here&rsquo;s the <a href="http://jtruher.itch.io/3720-1">page for the game</a>!</p>
+<p>I&rsquo;ve mentioned this before, but I&rsquo;ve been doing a lot of work and research with luxe, a game engine built on top of Haxe.  It&rsquo;s all pretty new and different for me, coming primarily from a recent iOS background - but that&rsquo;s for another post.</p>
+<p>Luxe is in alpha, which means it isn&rsquo;t quite finished yet.  Luxe, more importantly, is completely badass.  Damn and blast, I was going to talk about this another time.</p>
+<p>I&rsquo;m not going to cover what I brought up yesterday - we all know it&rsquo;s a spaceship game.  Instead, I&rsquo;ll go into how I actually put this whole thing together, from start to finish, with a bit of a focus on Luxe.  Like with C, Luxe starts you off in Main.  It&rsquo;s the entry point for the whole app (as far as I understand - apologies in advance, __discovery).  For me, it&rsquo;s also where I keep a few important, app-wide things, like where we&rsquo;re at in a state machine, and the starfield background.</p>
+<h4 id="background-starfield">Background Starfield</h4>
+<p>Speaking of which, that background is something that turned out really well.  I&rsquo;m pretty proud of how I put it together, so let&rsquo;s start there.  In Pixelmator, I added noise, tweaked light and dark balance and fiddled with it until I got black with a sea of stars.  From there, I duplicated that layer and ripped out anything black, leaving just stars.  That layer, with just stars and no black background, was duplicated a couple more times.  The trick here is that I went in with the eraser and just swept through it, leaving patches of stars here and there.</p>
+<p>Now, the engine part of things.  Each of those transparent layers gets to live as a texture on its own quad.  Simple uv coordinate manipulation - adding a delta on each frame - makes the texture slide across the quad (or Sprite, if you prefer the luxe term).  Each quad also gets its own delta speed, adding basic parallax.  Finally, I provided a basic setter to Main, the class containing this whole thing, so that any state could change the speed that the game went at.  Simple, straightforward, and pretty clean.</p>
+<h4 id="physics">Physics</h4>
+<p>One of the physics simulations luxe supports is called Nape.  Nape is pretty darned good, and more than sufficient for my purposes.  Putting it to good use is left as an exercise for the reader, but my general scheme was to put together a couple of simple static boxes: one would keep the player ships from exiting the view, and the other served to clean up any bullets or asteroids that bumped into it.  It was a pretty straightforward system.</p>
+<p>Nape, in particular, is pretty cool because of the rich callbacks system.  I can define certain physics bodies as one type, and others as another, then get a function called when the two bodies interact.  It&rsquo;s how all of my collision works: when two asteroids bump, I spawn a little explosion.  When a bullet hits an asteroid, same thing.  When an asteroid hits a player, explode a lot!  Oh, and kill that poor helpless ship, too.</p>
+<h4 id="input">Input</h4>
+<p>Input was pretty straightforward, too.  Luxe comes with an entity component system right out of the box, so I put this to good use.  My InputComponent ended up being a bit of a God Object, which isn&rsquo;t great - but, hey, game jam.  It&rsquo;s okay if things are a bit clunky or poorly designed, as long as it works.  Input holds onto the particular ship&rsquo;s physics body and attaches to the ship&rsquo;s Sprite.  Each frame, I update the sprite&rsquo;s position and rotation based on its physics body.  (This is how asteroids and bullets work, too.)</p>
+<p>One trick that I apply here, I think picked up from <a href="http://www.madgarden.net">@madgarden</a> is to give the acceleration a boost when the player tries to move in the opposite direction of travel.  So, if you&rsquo;re heading right and going fast, then try to go left, give a bit more oomph to the physics impulse until your velocity normalizes.  It makes everything a lot zippier and feels pretty great, once you&rsquo;ve tuned whatever that extra-oomph is.</p>
+<h4 id="data-driven-nonsense">Data-Driven Nonsense</h4>
+<p>I think this came up in yesterday&rsquo;s overall post, but going into the last day, I put together a basic json-based data file for ship stats.  This was after I&rsquo;d already gotten the whole game up and running.  This was huge, because it meant I could see where the hardcoded numbers are, and set them up accordingly in the json.  My InputComponent, after it&rsquo;s been loaded, can ask Main about what ship it&rsquo;s made and assign values out of the data file.</p>
+<p>It was almost offensive how well this system worked, and it&rsquo;s something I plan on re-using for other projects.  The only failing: the lack of testing.  If I had my druthers, I&rsquo;d put together something that let me twiddle and toggle game settings on the fly, rather than having a lengthy rebuild/relaunch cycle.  Being able to disable ship death and tweak ship settings in-game would have been huge.  Maybe for the next jam!  (But probably not, knowing me.)</p>
+<h4 id="music">Music</h4>
+<p>This is probably going to earn its own post at some point, but figuring out how to do loops and samples in Garage Band was pretty great.  I stepped through a bunch of their supplied loops, dragged in the ones that sounded good, then set them to loop over a particular interval until I got something I liked.  The one trick that I found handy was to separate an intro from a main game loop.  This seemed like a good way of doing things, because in luxe there&rsquo;s a completion handler for when a sound effect will end.</p>
+<p>That&rsquo;s most of the interesting chunks.  Doing this project in luxe has really gotten me excited again about building stuff, and I&rsquo;m looking forward to the next gamejam in August (July&rsquo;s has a schedule conflict for me, sadly).  I&rsquo;m also looking forward to just having an easier, cross-platformier dev environment.  After being iOS only for so long, being able to blast something out to a bunch of different places feels pretty great.</p>
           
         </div>
 
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2015/07/09/slow-jam-1-technical-postmortem/">Read more →</a>
-        </div>
         
       </div>
     
@@ -224,18 +265,41 @@ if (!doNotTrack) {
         
 
         <div class="post-content">
-          
-          
-          <!-- raw HTML omitted -->
-          
+          <p>It&rsquo;s been awhile!  I missed each and every one of you.  At least I haven&rsquo;t been sitting on my thumbs during my long-ish silence.  Promise!</p>
+<p>Before we get too far, here&rsquo;s the <a href="http://jtruher.itch.io/3720-1">page for the game</a>!</p>
+<p>So, PIGSquad, a local group of gamedev enthusiasts, is pretty great.  Recently, they started this neat Summer Slow Jams thingie - each month this summer is a different jam with a different theme (or set of themes).  I like game jams, but most of the 48/72 hour ones are a bit too rushed for me.  Family obligations make it difficult to really focus, too.  A week, on the other hand. . .</p>
+<p>A week is a pretty healthy amount of time.  The general theme was &ldquo;something you can showcase&rdquo; and the game-specific themes were: seed, spirits, in the fast lane, explosions(!), brewfest, guilty pleasures, wild west, and man vs machine.  Most of these didn&rsquo;t really say much to me, and the overall prompt of a showcase-worthy game was a bigger barrier than the game themes, honestly.</p>
+<p>(One interesting thing about the themes - at least two of them are total gimmes.  Guilty Pleasures and Explosions pretty much let you build whatever the hell you want - what game couldn&rsquo;t use more explosions?  It was a neat trick to make it easier for everyone to contribute and come up with something.)</p>
+<p>First off, before you can really start on anything, you have to, uh, think about what the hell you&rsquo;re doing, right?  For jams, I usually just sit and stare at the theme for awhile and waited for stuff to fall out.  Seed, spirits, brewfest, and guilty pleasures didn&rsquo;t yield much immediately.  I had a neat hook for man vs machine that was basically a cyborg metroidvania with some of the corruption mechanics from Breath of Fire: Dragon Quarter - you had rad robo-abilities, but using them made you more inhuman.  I stopped myself at &lsquo;metroidvania&rsquo; and filed that away for later.</p>
+<p>Which left only a few more options.  I had a hook for wild west: basically, a timing/reaction game with two players, where one had to move an analog stick in a certain way to draw a pistol, aim, and fire, but it felt too fiddly and didn&rsquo;t strike me as particulary &ldquo;showcaseable&rdquo;.  Yes, that&rsquo;s a word, as of now.</p>
+<p>In The Fast Lane was the first thing I ended up building a prototype for.  I had the idea of doing a Grandma Simulator, where you&rsquo;re an old lady sitting in the fast lane, oblivious to the traffic crashing behind you.  It seemed a little cruel and mean, and again, not all that showcaseable.  (My standards on what&rsquo;s worth showcasing might, upon reflection, be a little bit high.)  I kept thinking about it and ended up doing a kind of Road Rage simulator, instead.  I wired up simple boxes with basic movement to fake up what actual freeway traffic was like.  It worked, but it didn&rsquo;t strike me as particularly zazzy, so I shelved it.</p>
+<p>Time from first code written to discard: maybe a day or so?  On a 48h jam, I probably would&rsquo;ve just had to stick out the crappy prototype, but I knew I had a bit more time to let things noodle and build.  Probably a good thing, too, given how fiddly the cars felt.  Tuning physics for game feel is tricky, and adding decent AI drivers felt like a big challenge.</p>
+<p>It was Tuesday before I settled on a different idea, going with something else I thought of on the first night of the jam, using the theme of Explosions instead.  I had pretty decent shmup sprites, and a fairly good grasp of what makes those fun to play, so I settled on a cooperative Asteroid Field Navigation game, with a dash of Star Wars in-joke to boot.  3720 : 1 (3720 to 1) was born-ish!</p>
+<p>It didn&rsquo;t hurt that I&rsquo;d, more or less, done this already before.  A shmup that I&rsquo;ve been writing since the Kennedy Administration had a neat asteroid field mechanic, where occasionally these white ping-pong balls of death and sadness would rain down on you and the aliens.  Dodging them was fun and shooting them was fun - why not make a whole game around that one mechanic?  It seemed like it&rsquo;d work.  Scaling back weapon effectiveness and making it a team effort could help keep the game interesting and challenging.</p>
+<p>Which meant that I had to get to work, and work I did!  Though, looking back, not nearly as much as I should have.  The fun umbrella of personal issues kept me from being as productive as I ought to have been, leading to some last-minute issues.  Things got done, but not up to my usually high standards.  This being a jam is no reason for clumsiness or cludginess.</p>
+<p>My choice of tools were probably the thing that really saved me.  I used Pixatronic to generate my spaceship sprites and the asteroids, Pixelmator for the rad parallax starfield (probably my favorite part of the whole shebang), bfxr for sound effects, Garage Band for the music and, last but absolutely not least, luxe for the engine.</p>
+<p>Garage Band is a little cheesy, but the track for that turned out pretty well, too.  Figuring out how to put together simple loops was fun, and completely worth the half-hour invested.  This is a tool I&rsquo;ll absolutely use again the next time around.  Moving forward, I&rsquo;d like to add a few more loops to alternate between, rather than just an intro and a single loop.  Variation is good, and making different loops is as simple as toggling channels on and off.</p>
+<p>Luxe let me put together everything with remarkable speed and not a whole heck of a lot of code.  How much code, you ask?  This much!</p>
+<pre><code>-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+haXe                             7            242             74           1003
+JSON                             1              0              0             98
+-------------------------------------------------------------------------------
+SUM:                             8            242             74           1101
+-------------------------------------------------------------------------------
+</code></pre><p>Note that little chunk of JSON!  Another thing I&rsquo;m pretty happy with is having a set of ships, loaded from a file!  It&rsquo;s odd where the low bars and the high bars are, huh?  It&rsquo;s something I wanted to do on bullet heck for ages, and just couldn&rsquo;t handle, or couldn&rsquo;t get around to it.  C&rsquo;est la vie.</p>
+<p>Before I get too much further, remember the theme I&rsquo;d chosen: Explosions!  I had, uh, one.  It wasn&rsquo;t a bad one - a simple circle that appears and shrinks, with a bunch of squarish particles flying everywhere.  Probably not the worst explosion in the world, but it could have done with a lot more polish and tweaking.  This is an area I&rsquo;d definitely like to give more attention going forward, particularly when it comes to ships exploding.  They should knock asteroids around when they go kaboom!  At least I&rsquo;ve got screen shake.</p>
+<p>Going into the big jam demo night, I had a main menu screen, a ship selector screen (for up to 4 players) and a game screen.  Each worked - mostly.  The ship selector had a few bugs, and there were a few little issues with the game, too.  I&rsquo;m proud that I was able to get them fixed mid-jam-demo, but less proud that I let them slip at all.  One of the things I&rsquo;ve been reluctant to do, with jams, is commit to working in a team.  I&rsquo;ve always been concerned that I won&rsquo;t be able to work fast enough, or won&rsquo;t be able to contribute enough.</p>
+<p>Next time, however, my plan is to take on a team of friends and have them be extra sets of eyeballs.  This experience is some proof that I can push something decent enough out without completely driving myself mad.  Everything I caught in the last few hours could&rsquo;ve been spotted earlier - with another set of eyes, or more people.  Given the next jam topic is going to be multiplayer games, all the more reason to get more people involved.  The fact that I&rsquo;ve already written a multiplayer game for a jam (partially unintentionally) only helps my case.</p>
+<p>What&rsquo;s more, on the final demo night, I&rsquo;ll be able to have other people around to talk and show off the work.  I absolutely suck at self-promotion and talking about my work, so this is going to be a huge boon to me.  I dreaded showing it to people, and really hope the next time around goes even better than this time.</p>
+<p>The mechanics of scoring could have used a bit of help and explanation.  Basically, you earn points (parsecs) based on how far forward the furthest ship is.  The gameplay idea was to have someone in a quick ship towards the more dangerous part of the asteroid field, where fast reflexes were most necessary, and have the other players hang back and try to shoot asteroids out of their path.  There isn&rsquo;t much of a visual explanation of this effect - probably something added to the score bar would help in that regard.</p>
+<p>Knowing which ships to pick is also a bit of a challenge.  The star explanations for ship capabilities are. . .well, that was one of the last things I did, on the day of the jam.  I was throwing numbers into JSON and hoping nothing broke.  More work on ship balance is going to be necessary to call this actually finished and done.</p>
+<p>At the end of the day, I&rsquo;m pretty darn happy with how this project turned out - happy enough to actually post it for people to fiddle with.  I learned a lot about working with luxe, making music, not leaving things until the last minute (cough, cough) and just putting together a general framework for more of these types of games.  The general blocks and chunks are going to be really straightforward to pull out for the next multiplayer work.</p>
+<p>If you&rsquo;d like to try it, head to my <a href="http://jtruher.itch.io">itch page</a> to give 3720:1 a try.  It&rsquo;s still a little clumsy in a lot of ways, but I&rsquo;m still happy with how it turned out.  Feedback is always welcome, and the best place to hit me is probably my <a href="http://twitter.com/jtruher">twitter</a>.</p>
           
         </div>
 
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2015/07/08/summer-slow-jam-1-postmortem/">Read more →</a>
-        </div>
         
       </div>
     
@@ -255,20 +319,19 @@ if (!doNotTrack) {
         
 
         <div class="post-content">
-          
-          
-          Some people like to carefully proofread what they write and post on the Great Wide Internet™. It’s a good philosophy! It leads to quality content (for your braaaand) and, in general, it’s how things ought to be done.
-This is not gonna be one of those things. Strap yourselves in, folks, I’m going completely free association, here.
-Backing up a step, I’ve been playing around with luxe for the last few weeks, hence the silence.
-          
+          <p>Some people like to carefully proofread what they write and post on the Great Wide Internet™.  It&rsquo;s a good philosophy!  It leads to quality content (for your braaaand) and, in general, it&rsquo;s how things ought to be done.</p>
+<p>This is not gonna be one of those things.  Strap yourselves in, folks, I&rsquo;m going completely free association, here.</p>
+<p>Backing up a step, I&rsquo;ve been playing around with <a href="http://www.luxeengine.com">luxe</a> for the last few weeks, hence the silence.  Ludum Dare went Very Poorly, but unfortunately I don&rsquo;t know the Latin for that.  &lsquo;Vilissimo&rsquo;, sayeth the googles.  The sad part is that it&rsquo;s all stupid emotional nonsense, but that&rsquo;s not what I&rsquo;m here to fumble with.</p>
+<p>I&rsquo;ve been building a silly little couch party game for the last few nights - since Friday, come to think of it.  Or maybe last Thursday (4/23/2015).  The first night, I got a whole level loaded from <a href="http://www.mapeditor.org">Tiled</a>!  I&rsquo;ve never done that before, so it was kinda neat to see such quick turnaround.  Slowly but surely, I&rsquo;m learning.  Second and third night, all physics, then input.  Now I&rsquo;ve got these neat little marbles that roll around the screen, more or less how I imagined my prototype, way back when.  Triggers are hooked up, so I know when things bounce into bad things, and&hellip;</p>
+<p>Wait.  Shoot.  I&rsquo;m forgetting something.  The whole, uh, game part of gamedev.  This is just fiddling and playing around - valuable, for sure, and certainly when trying to pick up something new and slippery, but I can&rsquo;t really play this.  Games generally have goals, some have scores.  Even games with emergent fun, whatever the hell that is, tends to have some kind of structure in place.  So far, this is just a toy.  Which loops back to why I&rsquo;m here!</p>
+<p>What&rsquo;s a game, in the kind of base, boiled-down sense?  Is it just a set of rules, simple or complex?  Pong&rsquo;s a game, right?  At its core, Pong is a game that ends when someone&rsquo;s lives hit zero.  Aha!  That means, in my game, I need to keep track of each player, decrement some counter when a particular event happens, and call the game &lsquo;over&rsquo; when there&rsquo;s only one person left standing.  Right?</p>
+<p>Well, sure.  But what if it was a little different?  What if there was a flag, and each marble had to steal/knock it away from the other marbles to take it back to their little cubby?  How do you structure that?  I guess that&rsquo;s where I&rsquo;m at.  Luxe (bless it) has this pretty common, rad, new-to-me Entity-Component system.  I&rsquo;ve got a Sprite, and I attach Input to it, and bam, it moves.  I attach Physics, and shazam, it affects its world, while the world around it affects it.  (I&rsquo;ve combined the two for convenience, but you get the point).</p>
+<p>Which, after a whole lot of hot air and sore fingers on my part, leads to the conclusion: are Game Modes for this Dumb Marble Game just components that I can bolt onto&hellip;what?  Having them attached to the sprites themselves seems a little too low-level, truth be told.  What if the game object, the thing that holds the world, and the sprites, and receives the callbacks for collision, is the one I lump this thing onto?</p>
+<p>Well, now we&rsquo;re getting somewhere, aren&rsquo;t we?</p>
+
           
         </div>
 
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2015/04/28/whats-a-game/">Read more →</a>
-        </div>
         
       </div>
     
@@ -288,19 +351,19 @@ Backing up a step, I’ve been playing around with luxe for the last few weeks, 
         
 
         <div class="post-content">
-          
-          
-          This week was pretty slow. Most of it was spent fiddling and playing around with luxe and trying different things out. It’s going pretty well, and - hilariously enough - my first sample projects are rebuilding old stuff. I’m starting with bullet heck.
-Not really pictured, here, are a few of the things I’m still wrapping my head around. Input works pretty well with just the keyboard, but it might take a bit of effort to get playing nicely on mobile.
-          
+          <p>This week was pretty slow.  Most of it was spent fiddling and playing around with luxe and trying different things out.  It&rsquo;s going pretty well, and - hilariously enough - my first sample projects are rebuilding old stuff.  I&rsquo;m starting with bullet heck.</p>
+
+  <img src="http://i.imgur.com/ih1TPQU.png"  class="left"  style="border-radius: 8px; float:left; margin: 10px;"  />
+
+
+<!-- raw HTML omitted -->
+<p>Not really pictured, here, are a few of the things I&rsquo;m still wrapping my head around.  Input works pretty well with just the keyboard, but it might take a bit of effort to get playing nicely on mobile.  The mothership-esque thing also rotates to face the player, which is neat.</p>
+<p>The good news with all of this fiddling is that I think I&rsquo;ll be ready in two weeks (yikes) for the next Ludum Dare.  I&rsquo;m getting pretty excited!</p>
+<p>The other thing I did was play with a few more generators for wallomatic and try to re-integrate the blurring stuff.  I found some information about how to do a good blur, so I can at least tell if I&rsquo;m getting the &lsquo;right&rsquo; answer.  Still not sure it&rsquo;ll ship with blur, but at least I&rsquo;ve got one problem knocked out.  Basically, computer blur is dumb, and you&rsquo;ll end up with black bands, rather than the averaged color.  Obviously, this is bad if you want something to look good.</p>
+
           
         </div>
 
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2015/04/05/weekly-update-4-5-2015/">Read more →</a>
-        </div>
         
       </div>
     
@@ -320,19 +383,15 @@ Not really pictured, here, are a few of the things I’m still wrapping my head 
         
 
         <div class="post-content">
-          
-          
-          This week I did…stuff? Ostensibly? Mostly just playing around with the pattern wallpaper thing. So far it really doesn’t work very well at all, which is a bit disappointing. The dials and knobs are too fiddly, and I’m not getting results I like, so it’s not looking good for this stupid thing.
-Same deal with blur on wallomatic, actually. It’s…good, occasionally? And other times it’s just kind of a blurry mess (obviously) that hurts my eyes.
-          
+          <p>This week I did&hellip;stuff?  Ostensibly?  Mostly just playing around with the pattern wallpaper thing.  So far it really doesn&rsquo;t work very well at all, which is a bit disappointing.  The dials and knobs are too fiddly, and I&rsquo;m not getting results I like, so it&rsquo;s not looking good for this stupid thing.</p>
+<p>Same deal with blur on wallomatic, actually.  It&rsquo;s&hellip;good, occasionally?  And other times it&rsquo;s just kind of a blurry mess (obviously) that hurts my eyes.  I wanted something, oddly enough, with a lot of banding, but it isn&rsquo;t really working out very well.  Will try twiddling a bit more before giving that feature a swift kick in the teeth.</p>
+<p>Which is kind of a funny side-issue on its own.  It works pretty well on a few of them, all the time, but a lot of them it just really doesn&rsquo;t jive.  Is it better to not have it at all if it mostly sucks?  That&rsquo;s what I&rsquo;d think, but what do I know?</p>
+<p>Work continues, slowly but surely, on Bullet Heck.  I&rsquo;m doing some of the Game Center nonsense right now, filling out leaderboards and achievements, because every game needs &lsquo;cheevos!  I think a lot of the features are pretty much done, until they&rsquo;re, uh, not.  Welcome to gamedev!</p>
+<p>Lastly, I&rsquo;m still playing around with luxe engine/snowkit/whatever the hell.  Still neat, and trying to wrap my head around components and entities and how to get everything to be aware of each other and play nice.  The list of &ldquo;things I need to make a game&rdquo; is probably shorter than I think, and it&rsquo;s really only the hard things that I need to get worked out.</p>
+
           
         </div>
 
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2015/03/29/weekly-update-3-29-2015/">Read more →</a>
-        </div>
         
       </div>
     
@@ -352,19 +411,14 @@ Same deal with blur on wallomatic, actually. It’s…good, occasionally? And ot
         
 
         <div class="post-content">
-          
-          
-          This was a bit of a slow week. I’m still learning about haxe, snowkit, luxe, the works, so there’s not much to show for my efforts (so far). It’s a bit odd, jumping into a completely alien thing, but I’ll get competent sooner or later. Hopefully sooner - Ludum Dare’s right around the corner.
-I also did a bit of fiddling with the wallpaper generators, and finally got around to starting an idea I’ve been kicking around.
-          
+          <p>This was a bit of a slow week.  I&rsquo;m still learning about haxe, snowkit, luxe, the works, so there&rsquo;s not much to show for my efforts (so far).  It&rsquo;s a bit odd, jumping into a completely alien thing, but I&rsquo;ll get competent sooner or later.  Hopefully sooner - Ludum Dare&rsquo;s right around the corner.</p>
+<p>I also did a bit of fiddling with the wallpaper generators, and finally got around to starting an idea I&rsquo;ve been kicking around.  Wallomatic&rsquo;s kinda cool because it&rsquo;s simple and geometric and reasonably non-offensive, but there&rsquo;s no real art or style to it.  It occurred to me that using some simple textures and patterns, tinted, could be kind of a cool project, too, so I&rsquo;m putting together something that&rsquo;ll basically do that.</p>
+<p>I&rsquo;m happy enough with the wallomatic UI to pretty much bring the whole thing over.  I&rsquo;m tempted to redo the save button and maybe have some different options.  A share thing might be neat - you get to save a wallpaper without the annoying dialog if you also share it to facebook or twitter or something.</p>
+<p>Short week, busy week!  Yikes.  Tired of having colds all the time.</p>
+
           
         </div>
 
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2015/03/22/weekly-update-3-22-2015/">Read more →</a>
-        </div>
         
       </div>
     
@@ -384,19 +438,14 @@ I also did a bit of fiddling with the wallpaper generators, and finally got arou
         
 
         <div class="post-content">
-          
-          
-          This week was spent partially hating on SpriteKit and partially loving Fastlane. The latter is awesome. The former makes me sad. Bullet Heck was built in SpriteKit, and it’ll probably be my last project built with it, too. Moving on.
-Research into snowkit and haxe continues. I’m really liking it, and plan on having some kind of prototype-y thing built before too long. I don’t want to use it for the next Ludum Dare (at least, not before I’ve got a bit more experience using it) but it might be fun to see what I can cobble together.
-          
+          <p>This week was spent partially hating on SpriteKit and partially loving <a href="http://fastlane.tools">Fastlane</a>.  The latter is awesome.  The former makes me sad.  Bullet Heck was built in SpriteKit, and it&rsquo;ll probably be my last project built with it, too.  Moving on.</p>
+<p>Research into snowkit and haxe continues.  I&rsquo;m really liking it, and plan on having some kind of prototype-y thing built before too long.  I don&rsquo;t want to use it for the next Ludum Dare (at least, not before I&rsquo;ve got a bit more experience using it) but it might be fun to see what I can cobble together.</p>
+<p>Spent a bit of time working with those fastlane tools, though, building up screenshot scripts and getting things in line for inevitable, neglected app updates.  Pixatronic ought to get some better stuff at some point, and Panic Attack needs to get iPhone 6/6+ support someday.</p>
+<p>Er.  Suppose The Dungeon deserves all that, too, right?  Yikes.</p>
+
           
         </div>
 
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2015/03/15/weekly-update-3-15-2015/">Read more →</a>
-        </div>
         
       </div>
     
@@ -416,19 +465,13 @@ Research into snowkit and haxe continues. I’m really liking it, and plan on ha
         
 
         <div class="post-content">
-          
-          
-          This week was another brisk one. I spent a bit of time hammering at the asteroids in Bullet Heck to make them a bit more sensible and a bit more game-y. Just having a constant, endless wave of asteroids is a bit exhausting so I’m setting them up to do occasional bursts based on the asteroid density of that particular wave.
-I also did a bit of work on Wallomatic this week, adding a neat blur filter toggle.
-          
+          <p>This week was another brisk one.  I spent a bit of time hammering at the asteroids in Bullet Heck to make them a bit more sensible and a bit more game-y.  Just having a constant, endless wave of asteroids is a bit exhausting so I&rsquo;m setting them up to do occasional bursts based on the asteroid density of that particular wave.</p>
+<p>I also did a bit of work on Wallomatic this week, adding a neat blur filter toggle.  I&rsquo;m always leery about adding twiddlers and settings, but this one feels like a keeper.  It was all pretty much inspired by how OS X blurs your wallpaper at the login prompt, so I have Apple to thank!  Yay.</p>
+<p>I&rsquo;m still kinda thumping away at learning luxeengine/snowkit and that whole constellation of rad stuff.  There&rsquo;s an Art/Code night this Thursday that I&rsquo;m hoping to have something playable and pokable, but we&rsquo;ll see how it goes.  There&rsquo;s not <em>that</em> much stuff to build, but I&rsquo;ve got kind of a busy week ahead of me.</p>
+
           
         </div>
 
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2015/03/08/weekly-update-3-8-2015/">Read more →</a>
-        </div>
         
       </div>
     
@@ -448,19 +491,15 @@ I also did a bit of work on Wallomatic this week, adding a neat blur filter togg
         
 
         <div class="post-content">
-          
-          
-          Ages ago, I had a post about pens! (Hah. Post. Pens. Moving on.) I had two surprises from that, revolving around the Pilot pens - specifically, the Metropolitan and the Penmanship. One’s a fairly classic black, with pretty great weight to it, and the other is this odd clear plastic thing with grip-ridges and an odd cap.
-They’re both pretty good pens, and especially at their prices, but I was always disappointed with how thick the Fine nib was in the Metropolitan.
-          
+          <p>Ages ago, I had a post about pens!  (Hah.  Post.  Pens.  Moving on.)  I had two surprises from that, revolving around the Pilot pens - specifically, the Metropolitan and the Penmanship.  One&rsquo;s a fairly classic black, with pretty great weight to it, and the other is this odd clear plastic thing with grip-ridges and an odd cap.</p>
+<p>They&rsquo;re both pretty good pens, and especially at their prices, but I was always disappointed with how thick the Fine nib was in the Metropolitan.  I like to put down a really, really thin line because my writing is cramped and my handwriting isn&rsquo;t all that neat.  Thin means I get to be a bit sloppy, so between the two pens, the Penmanship really won out.</p>
+<p>That was pretty much the end of it until a week or two ago, when I started looking into nibs.  Why couldn&rsquo;t I put an EF into the Metro?  Turns out, there was nothing but fear stopping me - and another Penmanship.  I didn&rsquo;t even bother searching, though knew that you could yank it out of a Penmanship and do a swap that way.  Which, actually, is exactly what I did.</p>
+<p>Here&rsquo;s the shoot-the-Cacodemon-until-it-dies tip: wrap the nib and feed (the black thing with ridges) in tape to yank it out.  I used packing tape, because the nib only extends about halfway down.  Yep, just wrap that thing and give &lsquo;er a tug.  Be careful and gentle when unwrapping, repeat, then discover that the nibs just kinda fit into place.  Sliding it back on was pretty straightforward too, and just took a little bit of force.</p>
+<p>This is filed under &ldquo;lol who cares&rdquo; to just about everyone, but damn, I&rsquo;m happy with this pen now.  Dang, I never did end up doing that post about ink, did I?  Spoiler alert: I put Montblanc Blue/Black ink in there.  Puts down this really nice darkish-gray line.  It was my go-to black before I got this other ink, but that&rsquo;s for another post!</p>
+
           
         </div>
 
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2015/03/01/pilot-pen-nib-swaperoo/">Read more →</a>
-        </div>
         
       </div>
     
@@ -480,18 +519,13 @@ They’re both pretty good pens, and especially at their prices, but I was alway
         
 
         <div class="post-content">
-          
-          
-          This week, I did a bit more work on both Bullet Heck and my luxe evaluation. I was a little bummed out by the wiimote not being a good controller for luxe’s gamepad support, but I’ve got some spare 360 controllers that seem to do great. When I carve out the time I’m going to try to do a kind of physics-based arena Marble Madness kind of…thing. It’s still pretty nebulous but I think I’ve got enough of a hook that I should be able to fake something up.
-          
+          <p>This week, I did a bit more work on both Bullet Heck and my luxe evaluation.  I was a little bummed out by the wiimote not being a good controller for luxe&rsquo;s gamepad support, but I&rsquo;ve got some spare 360 controllers that seem to do great.  When I carve out the time I&rsquo;m going to try to do a kind of physics-based arena Marble Madness kind of&hellip;thing.  It&rsquo;s still pretty nebulous but I think I&rsquo;ve got enough of a hook that I should be able to fake something up.</p>
+<p>There was a game demo event thing on Monday that went pretty well.  Got a lot of stuff done on Bullet Heck just before, mostly adding text and story snippets.  I also managed to fix a long-standing annoyance with the way controls worked.  They&rsquo;ve been kinda stupid and broken for awhile so it feels really good to get them in a confident state.</p>
+<p>That was pretty much this week.  Someday I&rsquo;ll be done, though I&rsquo;m a bit terrified to write out the full and complete ship-task-list.  Those are usually pretty disheartening experiences.  Don&rsquo;t forget - when your game&rsquo;s mechanics are done, you&rsquo;re nowhere near done!</p>
+
           
         </div>
 
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2015/03/01/weekly-update-3-1-2015/">Read more →</a>
-        </div>
         
       </div>
     
@@ -511,19 +545,16 @@ They’re both pretty good pens, and especially at their prices, but I was alway
         
 
         <div class="post-content">
-          
-          
-          This week went by in a flash, and not a whole lot got done! Er. Crap. That’s, uh, precisely the opposite of what I should be saying, huh?
-It’s true, though! I was sick through most of the week, and Bullet Heck is starting to wind down in terms of features. There are still a few bugs left to squash, and some rough edges to polish, and - oh. Game Center, Leaderboards, score reporting, blech.
-          
+          <p>This week went by in a flash, and not a whole lot got done!  Er.  Crap.  That&rsquo;s, uh, precisely the opposite of what I should be saying, huh?</p>
+<p>It&rsquo;s true, though!  I was sick through most of the week, and Bullet Heck is starting to wind down in terms of features.  There are still a few bugs left to squash, and some rough edges to polish, and - oh.  Game Center, Leaderboards, score reporting, blech.  Monetization, too, I guess.  This is one of the problems with making stuff - even when you&rsquo;re done, you&rsquo;re not really done-done.</p>
+<p>I guess the thing I poked at more this week was evaluating new environments.  I&rsquo;ve been looking a ton at <a href="http://www.luxeengine.com">luxe</a> and <a href="http://snowkit.org/">snõwkit</a> because of <a href="http://jonathanhirz.com/">Jonathan Hirz</a>, a cool dude I know on Twitter.  (That had too many links.  I&rsquo;ll stop now, I swear.)  It&rsquo;s cross-platform, which is something I&rsquo;ve wanted to be able to support for awhile.  Looks like pushing out builds for gamejams and stuff is way more doable with this, too.  It&rsquo;s early days, but people seem happy with it.</p>
+<p>The tricky part now is figuring out which silly prototype idea ought to be dusted off to get built in this thing.</p>
+<p>I still really want to make a more general, non-generative version of Pixatronic at some point but I&rsquo;m not really a pixel artist, so I don&rsquo;t know if I&rsquo;m the best to judge whether it&rsquo;s useful or not.  I have a few ideas on how to make it not suck, but I&rsquo;ve had a lot of apathy towards that whole dumb thing - which is sad!  I&rsquo;m actually still pretty proud of how the canvas was all put together, code-wise.  (Maybe that&rsquo;s all rose-colored glasses, or something.)</p>
+<p>I need clones or interns or something.  Sheesh.</p>
+
           
         </div>
 
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2015/02/22/weekly-update-2-22-2015/">Read more →</a>
-        </div>
         
       </div>
     
@@ -543,19 +574,15 @@ It’s true, though! I was sick through most of the week, and Bullet Heck is sta
         
 
         <div class="post-content">
-          
-          
-          This week started out strong with a fairly productive Art/Code night hosted by a local gamedev meetup group. I twiddled a bit on a traditional pixel editor for iOS, a procedural hero generator thingie, and finished it off with more tweaks and work on Bullet Heck.
-Bullet Heck might be mechanics-complete at this point. The asteroid stages turned out pretty fun, and they add a lot of chaos that isn’t necessarily detrimental to the player.
-          
+          <p>This week started out strong with a fairly productive Art/Code night hosted by a local gamedev meetup group.  I twiddled a bit on a traditional pixel editor for iOS, a procedural hero generator thingie, and finished it off with more tweaks and work on Bullet Heck.</p>
+<p>Bullet Heck might be mechanics-complete at this point.  The asteroid stages turned out pretty fun, and they add a lot of chaos that isn&rsquo;t necessarily detrimental to the player.  Still to be done is tweaking parameters with all of that stuff, which is what I&rsquo;m planning on doing for the next week or so.  Still doing general polish/bugfixes/rough-edge-sanding, which happens, uh, forever.  Just ask anyone.</p>
+<p>Taking a first stab at a silly little bit of story/flavor text at game-start, too.  Should be sorta mad-libs-y with a bit of humor.</p>
+<p>I probably need to spend a bit of time redoing sounds, too.  They&rsquo;re kind of a mess, and just kinda not good.  Jumbled, unclear, nondistinct.</p>
+<p>Oh, I twiddled a bit on a new wallpaper idea, too, something plaid-ish or Tartan-esque.  Not quite done yet, but it looks kinda neat.  Not eye-searing, at least.</p>
+
           
         </div>
 
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2015/02/15/weekly-update-2-15-2015/">Read more →</a>
-        </div>
         
       </div>
     
@@ -575,20 +602,15 @@ Bullet Heck might be mechanics-complete at this point. The asteroid stages turne
         
 
         <div class="post-content">
-          
-          
-          This week I started digging into Unity’s massive tutorial-o-rama. Cripes, you people loves you some videos, huh? Not a single text/picture intro tutorial in sight.
-Most of the effort’s been focused on getting Bullet Heck done and fun. I added a new, silly gameplay mechanic this week that’s already cracking me up. Asteroids can fly in and ruin people’s day now, including the aliens. Should be pretty fun.
-Informal playtest feedback has been pretty helpful, too.
-          
+          <p>This week I started digging into Unity&rsquo;s massive tutorial-o-rama.  Cripes, you people loves you some videos, huh?  Not a single text/picture intro tutorial in sight.</p>
+<p>Most of the effort&rsquo;s been focused on getting Bullet Heck done and fun.  I added a new, silly gameplay mechanic this week that&rsquo;s already cracking me up.  Asteroids can fly in and ruin people&rsquo;s day now, including the aliens.  Should be pretty fun.</p>
+<p>Informal playtest feedback has been pretty helpful, too.  I&rsquo;m liking Apple&rsquo;s new TestFlight stuff.  Seems like I don&rsquo;t have to hound or hassle testers to get feedback these days, which is a pleasant surprise.</p>
+<p>Lastly, I started noodling and writing down ideas for the Next Big Scary Thing.  I don&rsquo;t know what I want to build it in, and I don&rsquo;t really know how I&rsquo;m gonna do it, but I&rsquo;m hoping to get that more nailed down in the coming weeks.  We&rsquo;ll see how it goes.  It&rsquo;s sort of procedural-ish and roguelike-y without being explicitly part of either faction.</p>
+<p>Short update, I know - I&rsquo;m still fighting stupid colds and have been majorly low on energy.  Tis the season, I guess.</p>
+
           
         </div>
 
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2015/02/08/periodic-update-2-8-2015/">Read more →</a>
-        </div>
         
       </div>
     
@@ -608,51 +630,18 @@ Informal playtest feedback has been pretty helpful, too.
         
 
         <div class="post-content">
-          
-          
-          This week was busy, so I’ll keep this brief. Did a bit more work on sounds for Bullet Heck and threw in music, too. Did a bitcrusher pass against it to make things nice and crunchy, but might’ve taken it a bit too far. Will probably tweak it more.
-Not quite feature complete yet, but getting there. I’ve got a few more things I want to add before calling it done enough.
-          
+          <p>This week was busy, so I&rsquo;ll keep this brief.  Did a bit more work on sounds for Bullet Heck and threw in music, too.  Did a bitcrusher pass against it to make things nice and crunchy, but might&rsquo;ve taken it a bit too far.  Will probably tweak it more.</p>
+<p>Not quite feature complete yet, but getting there.  I&rsquo;ve got a few more things I want to add before calling it done enough.  Someday it might even come out!</p>
+<p>That&rsquo;ll be nice.</p>
+<p>Oh.  I guess the other thing that&rsquo;s going on is that I&rsquo;m getting pretty fed-up with SpriteKit and being stuck on Mac/iOS.  I like obj-c (yes, I&rsquo;m a crazy person) and I&rsquo;m pretty good at using it, but it&rsquo;s really limiting in terms of what I can make.  I can&rsquo;t do 4-player couch party games, and I&rsquo;d like to.  There are restrictions with their graphics engine that are starting to piss me off, too.  See:</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p>That&rsquo;s pretty crappy.  When does it make sense to do shadows like that?  I&rsquo;d have to do raycasting and silly tricks with zPosition to make it work the way I want to, and ugh.  I don&rsquo;t really have enough time available to spend it fighting with my tools.</p>
+<p>Which means I&rsquo;m kind of in a holding pattern while I fumble and fiddle with a few new technologies.  Unity&rsquo;s on the list just because everyone&rsquo;s always goddamned talking about it, as is HaxeFlixel and snowkit.  Both look neat, and both let me deploy anywhere.</p>
+<p>Shit.  Maybe I&rsquo;ll end up making games for Android after all.  Brave new world, huh?</p>
+
           
         </div>
 
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2015/02/01/periodic-update-2-1-2015/">Read more →</a>
-        </div>
-        
-      </div>
-    
-      <div class="post on-list">
-        <h1 class="post-title">
-          <a href="/posts/2015/01/25/periodic-update-1-25-2015/">Periodic Update: 1-25-2015</a>
-        </h1>
-        <div class="post-meta">
-          <span class="post-date">
-            2015-01-25
-          </span>
-          
-        </div>
-
-        
-
-        
-
-        <div class="post-content">
-          
-          
-          Shoot! It’s 11PM, and I nearly forgot to do my weekly progress update!
-This week was spent giving Bullet Heck a lot of polish and effort. I improved performance a bit by pushing stuff onto the background and totally redid how audio works. Anyone who thinks they can ship a straight-up, boring SpriteKit game with just the stuff they give you is…well, not me, apparently. I was pleased that the stuff I wrote for Panic Attack slid over pretty easily.
-          
-          
-        </div>
-
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2015/01/25/periodic-update-1-25-2015/">Read more →</a>
-        </div>
         
       </div>
     

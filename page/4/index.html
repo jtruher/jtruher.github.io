@@ -179,6 +179,35 @@ if (!doNotTrack) {
     
       <div class="post on-list">
         <h1 class="post-title">
+          <a href="/posts/2013/08/22/tappy-swipey/">Tappy Swipey</a>
+        </h1>
+        <div class="post-meta">
+          <span class="post-date">
+            2013-08-22
+          </span>
+          
+        </div>
+
+        
+
+        
+
+        <div class="post-content">
+          <p>One of the early feature requests for Panic Attack, even before it was called that, revolved around user input.  People expected to slide, and were surprised and annoyed when their expectations weren&rsquo;t met.  I&rsquo;m a people-pleaser, and I like trying to make things that people will enjoy using, so the next update will include a second, likely more-popular control scheme that closely mimics the one found in Planet Puzzle League, a Tetris Attack clone for the Nintendo DS.</p>
+<p>It seems like a not-bad idea to describe why I built things the way I did.  I came at this project with a couple of strong biases: first, the original Tetris Attack for the SNES, and a freeware game called Crack Attack for desktop PCs.  Both had a kind of reticule thing - hitting a button would swap the two wrapped blocks.  My thinking, for my iOS version, was to just nuke the reticule and have the blocks swap if you tapped between them.  The context seemed obvious in my eyes, but - whoops! - hasn&rsquo;t been to others.</p>
+<p>Now, one of the little details about my current scheme revolves around timing.  It&rsquo;s an important thing, for all of the versions I&rsquo;ve played and enjoyed.  Things happen at a particular time, and take a bit of time for the animations to run through.  I lock blocks for a quarter of a second, giving the animation time to complete.  If you try to swap a locked block, you&rsquo;ll get a wiggle that says, hey, Cool It.  With this, the game seemed to play pretty well.</p>
+<p>Enter the Swipe.  I&rsquo;ve got it working now, actually, and. . .goddamnit.  It plays better than the tap.  I don&rsquo;t know if it&rsquo;s more intuitive, but it&rsquo;s definitely faster, because, at the moment, I&rsquo;ve got a lot of the timing stuff sort of turned off.  You can press your finger down on a block to grab it, then tug the thing over, and everything just slides and is completely happy.  The quarter-second delay is broken.  The game seems to feel better for it, but now I&rsquo;m worried that it&rsquo;ll completely break the feel of the game.  It&rsquo;ll certainly make tap-mode less appealing, since I don&rsquo;t think you can do as many things as quickly.</p>
+<p>So - either I can force a delay into swipe mode and cripple it like taps, leave it as is and have a lame tap mode, or try to disable the delay for tap mode.  There&rsquo;s one little animation glitch with the current swipe mode, but it doesn&rsquo;t seem like a good enough reason not to turn something on for the sake of better gameplay.</p>
+<p>Woof.  Compromises.</p>
+
+          
+        </div>
+
+        
+      </div>
+    
+      <div class="post on-list">
+        <h1 class="post-title">
           <a href="/posts/2013/08/02/waterfight-pre-mortem/">Waterfight Pre-Mortem</a>
         </h1>
         <div class="post-meta">
@@ -193,19 +222,27 @@ if (!doNotTrack) {
         
 
         <div class="post-content">
-          
-          
-          Like a lot of indies and hobbyists, I play around with a lot of prototypes. Most of the time, these don’t see the light of day, and for good reason - they’re generally awful. It’s occurred to me more and more recently, though, that the cone of shamesilence might be more appropriate for, say, Apple, and less appropriate for someone nobody’s heard of.
-So with that in mind, I thought it’d be a fun exercise to share some of my less-awful fiddlings, on the off-chance that someone finds them interesting.
-          
+          <p>Like a lot of indies and hobbyists, I play around with a lot of prototypes.  Most of the time, these don&rsquo;t see the light of day, and for good reason - they&rsquo;re generally awful.  It&rsquo;s occurred to me more and more recently, though, that the cone of <!-- raw HTML omitted -->shame<!-- raw HTML omitted -->silence might be more appropriate for, say, Apple, and less appropriate for someone nobody&rsquo;s heard of.</p>
+<p>So with that in mind, I thought it&rsquo;d be a fun exercise to share some of my less-awful fiddlings, on the off-chance that someone finds them interesting.  If nothing else, these are great mistakes to learn from.  There&rsquo;s also the slim chance that they&rsquo;ll encourage me to actually finish them - finishing stuff&rsquo;s always a good thing, even if it&rsquo;s complete garbage.</p>
+<h3 id="initial-motivation">Initial Motivation</h3>
+<p>{% flickr_image 9423048349 n left &ldquo;An early test with hue shifting.&rdquo; %}</p>
+<p>There was a great article about <a href="http://jeremykun.com/2012/07/29/the-cellular-automaton-method-for-cave-generation/">making caves with cellular automata</a> from. . .sheesh, back in March, I think.  <a href="http://twitter.com/madgarden">@madgarden</a>, one of my many nemeses, wrote a quick little C implementation and pushed a neat little toy game of life up onto the App Store.  When I saw this thing make caves, for some reason, my first thought was how they&rsquo;d look if they were full of water, and you could drop ink into it to see it spread.  You&rsquo;d have a fun little set of restrictions on where the water could go, and a bit of falloff as the ring lost momentum.</p>
+<p>Crackpot idea, huh?  But it seemed like something that&rsquo;d be neat to see working, so I promptly forgot about the idea for a month or two while I was trying to get Panic Attack shipped.  Eventually, I came back to it in the middle of May.  According to screenshots, it looks like I spent about a week playing around with it before interest fizzled.  It looks like this was, more or less, while Panic Attack was in review.  Go figure.</p>
+<h3 id="whatd-i-build">What&rsquo;d I Build?</h3>
+<p>{% flickr_image 9425814028 n right &ldquo;Territorial spread in action.  I like the pretty teal.&rdquo; %}</p>
+<p>What exists now is actually remarkably close to what the original idea was.  You can mark points on a 2d grid of colored cells, taking turns with your opponent in an attempt to control as much of the available space as possible.  Some of the mechanics don&rsquo;t work quite as you&rsquo;d expect, but this is. . .techno. . .something, not water.</p>
+<h3 id="what-went-right-and-why">What Went Right, and Why?</h3>
+<p>The cellular automata stuff got hooked up and working really, stupidly fast.  I pretty much have @madgarden to thank for that.  I also tried doing something a little different.  For nerd talk, the game is pretty much just a big grid of CALayers.  I overlap them slightly, such that their borders rest on top of their neighbors.  I offset the colors just slightly on each, fiddling with small deltas on saturation and luminance, and I think it turned out really kind of pretty.</p>
+<p>Doing colors with HSB rather than RGB is something I&rsquo;m probably going to do more and more going forward, particularly in places where I want to keep a fairly distinctive color scheme but want to keep some kind of interesting noise.  This was a trick I first tried playing with on the dumb LD26 project - that&rsquo;ll get one of these pre-mortems, too, at some point.</p>
+<h3 id="what-sucked-and-why">What Sucked, and Why?</h3>
+<p>The game itself was kind of slow.  This is because I&rsquo;m doing things in a thickheaded way.  It&rsquo;s definitely not shippable as it stands now, but maybe moving to some of the new iOS7 stuff will make it tolerable.</p>
+<p>The UI/interaction stuff is also godawful.  It was getting better near the end, but it was really hard to tell what the hell was going on, and what various taps would do.  It was barely usable for me, and certainly doesn&rsquo;t pass the Spouse Test.</p>
+<h3 id="whats-next">What&rsquo;s Next?</h3>
+<p>Maybe iOS7, but probably nothing.  It looked pretty, at least, so it has that going for it.  I&rsquo;m not even sure there&rsquo;s much of a market for this, so at best it&rsquo;d probably just be a free app.</p>
+
           
         </div>
 
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2013/08/02/waterfight-pre-mortem/">Read more →</a>
-        </div>
         
       </div>
     
@@ -225,19 +262,16 @@ So with that in mind, I thought it’d be a fun exercise to share some of my les
         
 
         <div class="post-content">
-          
-          
-          Automatic App Update is one of the new headline features in iOS 7. Part of me is thrilled, particularly as a developer - now, I’m less likely to wonder whether a customer is running the latest version of my software. Sure, that particular class of defects is still going to be something to consider, but now it’ll hopefully be less prevalent.
-A snooty part of my personality, though, wondered how necessary it was.
-          
+          <p>Automatic App Update is one of the new headline features in iOS 7.  Part of me is thrilled, particularly as a developer - now, I&rsquo;m less likely to wonder whether a customer is running the latest version of my software.  Sure, that particular class of defects is still going to be something to consider, but now it&rsquo;ll hopefully be less prevalent.</p>
+<p>A snooty part of my personality, though, wondered how necessary it was.  I mean, we get a badge and everything, and people who don&rsquo;t pay attention to their home screen or don&rsquo;t bother to update apps don&rsquo;t deserve special privilege.  Right?</p>
+<p>Except, today, I spent all day bouncing between apps.  Never touched Springboard once, and had a few things in the background that&rsquo;d been updated - apps I actually use and enjoy, no less.  Uh.  Whoops.</p>
+<p>This, if nothing else, is really a step in the same direction as a lack of task manager and some (basic on a traditional PC) features, like rich storage management controls.  It advocates that users shouldn&rsquo;t have to give any kind of a shit, and their stuff&rsquo;ll just work, and be new, bright and shiny.</p>
+<p>This, of course, begs the question about what happens when a developer, inevitably, ships the DO NOT UPDATE! update, but time&rsquo;ll tell if Apple has something new for that particular issue.  As far as I&rsquo;m aware, a developer can issue a rollback for an update, but this is still problematic if you&rsquo;re using Core Data and its handy, helpful automatic migration (I&rsquo;ll spare you the boring details).  In most apps, though, this&rsquo;ll probably work out just fine.</p>
+<p>All in all, I&rsquo;m actually really looking forward to 7.</p>
+
           
         </div>
 
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2013/06/20/ios7-automatic-updates/">Read more →</a>
-        </div>
         
       </div>
     
@@ -257,19 +291,14 @@ A snooty part of my personality, though, wondered how necessary it was.
         
 
         <div class="post-content">
-          
-          
-          New Years’ Resolutions, by and large, are a crock of shit. Most people who make them don’t follow them, and they’re just a fantastic source of guilt for just about everyone. Boring. Write about something else.
-This year, instead of making resolutions I won’t keep, I’m just trying to passively do little things that’ll help me as I go. One of the things that took me nearly two weeks to notice was a brief nightly journal.
-          
+          <p>New Years&rsquo; Resolutions, by and large, are a crock of shit.  Most people who make them don&rsquo;t follow them, and they&rsquo;re just a fantastic source of guilt for just about everyone.  Boring.  Write about something else.</p>
+<p>This year, instead of making resolutions I won&rsquo;t keep, I&rsquo;m just trying to passively do little things that&rsquo;ll help me as I go.  One of the things that took me nearly two weeks to notice was a brief nightly journal.  Every night, assuming I&rsquo;ve done something, I jot down a few sentences, maybe a paragraph or two, into my journal.  GTD folks might call it a decompression, or a dump, or a hull breach, but for me, it&rsquo;s just a way to kind of vomit a few words onto the page.</p>
+<p>Another thing, and this is kind of a bigger one, is to just do a little bit every day.  It&rsquo;s hard when you&rsquo;ve had a lingering, stupid little cold since November, but it&rsquo;s getting easier as time passes.  This might be something like start a refactor of past stupidities, or twiddle with how buttons look, or even crack open a fresh prototype.  Any progress is good progress.</p>
+<p>These have actually helped me build and keep more momentum, assuming that I manage to keep it up.  Only 11 more months to go, though, right?  Then I can go back to being an awful person.  I can hardly wait!</p>
+
           
         </div>
 
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2013/02/05/habits/">Read more →</a>
-        </div>
         
       </div>
     
@@ -289,20 +318,16 @@ This year, instead of making resolutions I won’t keep, I’m just trying to pa
         
 
         <div class="post-content">
-          
-          
-          Okay, let’s get this show on the road. Next year, I promise, I’ll do this a month earlier!
-What do I actually want to get done in 2013? Basically, the same plans as 2012 - it’d be nice to actually make something and send it out into the world to get ripped apart. This year, though, I’ve got some new ideas and some different plans.
-For one thing, I’ve been working on something based on an odd idea I had over the summer.
-          
+          <p>Okay, let&rsquo;s get this show on the road.  Next year, I promise, I&rsquo;ll do this a month earlier!</p>
+<p>What do I actually want to get done in 2013?  Basically, the same plans as 2012 - it&rsquo;d be nice to actually make something and send it out into the world to get ripped apart.  This year, though, I&rsquo;ve got some new ideas and some different plans.</p>
+<p>For one thing, I&rsquo;ve been working on something based on an odd idea I had over the summer.  That&rsquo;s not quite ready to show yet, unless you&rsquo;ve been following on twitter, in which case, uh, you&rsquo;ve seen it.  Same with a bullet hell-esque shooter.  That one&rsquo;s a pure mechanical nightmare.  There&rsquo;s also another clone that&rsquo;s in the works, but way too early to talk about.</p>
+<p>The odd thing about all of those?  They&rsquo;re basically clones, with a minor twist.  Yes, that&rsquo;s sort of intentional, for reasons which deserve their own post.</p>
+<p>But, all is not boring and dull!  One neat thing that I&rsquo;m pursuing is sort of tertiary to all of this game development stuff.  I&rsquo;ve had a fascination with games for people of different tastes and persuasions - one of my favorite things to ponder is how, exactly, I&rsquo;d write a game for someone who was visually impaired.  I&rsquo;ve actually considered making <a href="/the-dungeon">The Dungeon</a> easier to play for non-sighted users, but I don&rsquo;t think any of them would actually want to play it. (If that&rsquo;s not the case, please yell at me, and I can try to make it happen.  Honest.)</p>
+<p>So, games for. . .not 10-50 year olds.  Who does that leave us with?  Well, either slower games, or. . .hm.  Early education?  Surely nobody buys software for toddlers and pre-kindergarden. . .</p>
+
           
         </div>
 
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2013/02/04/2013-plans-and-goals/">Read more →</a>
-        </div>
         
       </div>
     
@@ -322,22 +347,20 @@ For one thing, I’ve been working on something based on an odd idea I had over 
         
 
         <div class="post-content">
-          
-          
-          <p>Because this went so well, it seemed like a good idea to take a look through last year’s as I start to think about what to do this year. In no particular order, they were basically:</p>
-<ul>
-<li>Ship The Dungeon 2.0 * Mac version of TD? * Make a Not-Game * Write more  Woof. One out of, uh, four ain’t bad, right? If nothing else, there’s room for improvement, and to be fair, the 2.</li>
-</ul>
+          <p>Because <a href="/blog/2012/01/19/2012-plans-goals/">this</a> went so well, it seemed like a good idea to take a look through last year&rsquo;s as I start to think about what to do this year.  In no particular order, they were basically:</p>
+<pre><code>* Ship The Dungeon 2.0
+* Mac version of TD?
+* Make a Not-Game
+* Write more
+</code></pre>
+<p>Woof.  One out of, uh, four ain&rsquo;t bad, right?  If nothing else, there&rsquo;s room for improvement, and to be fair, the 2.0 update (and .0.1 and .0.2) ended up being pretty damned big.  It&rsquo;s almost gotten to the point where I&rsquo;m not completely ashamed of it, either, so that&rsquo;s bonus awesome.</p>
+<p>The Mac version ended up being a bit of a quagmire, and interest petered out pretty quickly.  It really is better suited for a quick, 30 second play experience, not the kind of deep game that most desktop players are accustomed to.</p>
+<p>The Not-Game projects both petered out as well due to lack of interest, as did writing more.  This started to pick up a little as I switched away from Posterous and over towards this static site thing with Octopress (couldn&rsquo;t you tell?)  I&rsquo;d like to write more, because I really do enjoy it.  I&rsquo;ve got a few things that&rsquo;ve needed doing for a few months now, but am finally hitting a stride where things are actually being accomplished on a night-to-night basis.</p>
+<p>That&rsquo;s not to say I&rsquo;m disappointed with how 2012 went.  It was kind of a colossal year, with a huge change right near the end.  I prototyped a few things, one of which is still being developed, and deserves its own little chunk of space.  All done looking backwards now - time to look ahead.  Woof!</p>
 
-          
           
         </div>
 
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2013/01/16/2012-retrospective/">Read more →</a>
-        </div>
         
       </div>
     
@@ -357,19 +380,27 @@ For one thing, I’ve been working on something based on an odd idea I had over 
         
 
         <div class="post-content">
-          
-          
-          I’ve been playing around a bit with a few little iOS apps, and one of the annoying things I’ve come across is how rotation is handled: specifically, how it isn’t quite handled by your views. It is, from a certain point of view, just fine, but from another, it’s completely nuts.
-Every UIView has what’s called a transform - the linear algebra explanation is that it’s a 3x3 matrix that mucks about with your UIView’s box in 3d-space.
-          
+          <p>I&rsquo;ve been playing around a bit with a few little iOS apps, and one of the annoying things I&rsquo;ve come across is how rotation is handled: specifically, how it isn&rsquo;t quite handled by your views.  It is, from a certain point of view, just fine, but from another, it&rsquo;s completely nuts.</p>
+<p>Every UIView has what&rsquo;s called a transform - the linear algebra explanation is that it&rsquo;s a 3x3 matrix that mucks about with your UIView&rsquo;s box in 3d-space.  This is all well and good, until you ask for your view&rsquo;s center after rotating.</p>
+<p>Read that again.  Okay.</p>
+<p>So, time for a quick test.  Portrait mode, iPad, what&rsquo;s my center?  {384, 512}.  Width, height, all well and good.</p>
+<p>Rotate to landscape (so now we&rsquo;re wider than we are tall).  What&rsquo;s the view&rsquo;s center?  {384, 512}?  Uh.  Hm.</p>
+<p>Were you expecting that?  I sure as heck wasn&rsquo;t.  I don&rsquo;t really have a great solution for this yet, either, so if you&rsquo;re like me, and enjoy positioning crap based on your view&rsquo;s coordinates, you might be a little sad.  Fear not, however!  There&rsquo;s a semi-awful solution that isn&rsquo;t too hardcore stupid.  In your view controller, just add a few methods:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-objectivec" data-lang="objectivec">-(CGPoint)<span style="color:#a6e22e">center</span>
+{
+	<span style="color:#66d9ef">return</span> CGPointApplyAffineTransform(self.view.center, self.view.transform);
+}
+
+-(CGRect)<span style="color:#a6e22e">frame</span>
+{
+	<span style="color:#66d9ef">return</span> CGRectApplyAffineTransform(self.view.frame, self.view.transform);
+}
+
+</code></pre></div><p>As always, test and log thoroughly before taking this at face value.  Also, this means that instead of doing self.view.center, you&rsquo;d end up with just self.center.  Both&rsquo;ll work fine in portrait, but only one&rsquo;ll be happy with all rotations.</p>
+
           
         </div>
 
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2013/01/16/dome-rotation/">Read more →</a>
-        </div>
         
       </div>
     
@@ -389,18 +420,103 @@ Every UIView has what’s called a transform - the linear algebra explanation is
         
 
         <div class="post-content">
-          
-          
-          <!-- raw HTML omitted -->
-          
+          <p>For quite some time now, I&rsquo;ve had a bit of a wild hare about something incredibly stupid.  After being pestered a few too many times about getting a TestFlight build while away from my computer, I thought, hey, it&rsquo;d be sweet if I could, from my phone, tell the damned machine to make a new build and push it up to TestFlight.</p>
+<p>So, one weekend when I was particularly full of beans, I gave it a quick, vicious stab.</p>
+<p>Thankfully, someone else already solved a hell of a lot of this problem.  My minor contribution is a bit of AppleScript-y magic that fires a script off from an iMessage (which, in light of their reliability, was maybe not my best choice.  Still, it hasn&rsquo;t missed a build so far.)</p>
+<p>What&rsquo;s the practical use of this? For one thing, if I can keep project sizes small (let&rsquo;s say under half a meg) it ends up being faster for me to push everything up via this script, then use TestFlight to install on all of the various devices I&rsquo;m building for.  All of the things I&rsquo;m working on are Universal and support iOS 5.1, so I&rsquo;ve got: a 3GS, a 4, an iPad 1, and a now-horrifically-embarrassingly out of date iPad 3 (which I adore.  Seriously.  It&rsquo;s what I&rsquo;ve been doing all of my blogging on).</p>
+<p>The other, somewhat less silly part about this is that I don&rsquo;t <em>actually</em> need a computer for development.  Well, sure, I need something to go compile some shit, but I don&rsquo;t actually need it with me.  I was inspired by some lunatic&rsquo;s story about ditching his laptop for an iPad/linode server, and this is kind of like the poor man&rsquo;s version of that.  No slight intended to Textastic (which is great) but it doesn&rsquo;t make Obj-C development as easy as Xcode.  Shucks.</p>
+<p>It&rsquo;s sure as hell good enough to muddle about, though, and learning not to depend on newfangled tools is probably a good thing for anyone to learn. It&rsquo;s also not the worst debugging feedback loop I&rsquo;ve ever worked with, though by golly, does it come close.</p>
+<p>First, I started off using the following <a href="https://gist.github.com/2411095">GitHub gist</a>.  It&rsquo;s really what&rsquo;s doing most of the heavy lifting.  It&rsquo;ll clean your builds, make the project, sign with a provisioning profile, then curl it on up to TestFlight.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/bin/sh
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e"># Current as working as of 2012/4/17</span>
+<span style="color:#75715e"># Xcode 4.3.2</span>
+
+PROJECT_ROOT<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/SomeDirWhereYourProjectLives/XXXXXXXX&#34;</span>
+
+WORKSPACE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$PROJECT_ROOT<span style="color:#e6db74">/XXXXXXXX.xcodeproj/project.xcworkspace&#34;</span>
+CONFIG<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;AdHoc&#34;</span>
+SCHEME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;XXXXXXXX&#34;</span>
+SDK<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;iphoneos&#34;</span>
+TARGET<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;XXXXXXXX&#34;</span>
+BUILDDIR<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/build</span>$TARGET<span style="color:#e6db74">&#34;</span>
+OUTPUTDIR<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$BUILDDIR<span style="color:#e6db74">/AdHoc-iphoneos&#34;</span>
+APPNAME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;XXXXXXXX&#34;</span>
+DEVELOPER_NAME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;John Doe (PRTG45V3X)&#34;</span>
+PROVISIONING_PROFILE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$PROJECT_ROOT<span style="color:#e6db74">/XXXXXXXX.mobileprovision&#34;</span>
+
+echo $BUILDDIR
+
+cd $PROJECT_ROOT
+
+echo <span style="color:#e6db74">&#34;********************&#34;</span>
+echo <span style="color:#e6db74">&#34;*     Cleaning     *&#34;</span>
+echo <span style="color:#e6db74">&#34;********************&#34;</span>
+xcodebuild -alltargets clean
+
+<span style="color:#75715e"># echo &#34;********************&#34;</span>
+<span style="color:#75715e"># echo &#34;*     Archiving     *&#34;</span>
+<span style="color:#75715e"># echo &#34;********************&#34;</span>
+<span style="color:#75715e"># xcodebuild -workspace $WORKSPACE -scheme $SCHEME archive</span>
+
+echo <span style="color:#e6db74">&#34;********************&#34;</span>
+echo <span style="color:#e6db74">&#34;*     Building     *&#34;</span> 
+echo <span style="color:#e6db74">&#34;********************&#34;</span>
+xcodebuild -sdk <span style="color:#e6db74">&#34;</span>$SDK<span style="color:#e6db74">&#34;</span> -target $TARGET -configuration <span style="color:#e6db74">&#34;</span>$CONFIG<span style="color:#e6db74">&#34;</span> OBJROOT<span style="color:#f92672">=</span>$BUILDDIR SYMROOT<span style="color:#f92672">=</span>$BUILDDIR
+
+echo <span style="color:#e6db74">&#34;********************&#34;</span>
+echo <span style="color:#e6db74">&#34;*     Signing      *&#34;</span>
+echo <span style="color:#e6db74">&#34;********************&#34;</span>
+xcrun -log -sdk iphoneos PackageApplication -v <span style="color:#e6db74">&#34;</span>$OUTPUTDIR<span style="color:#e6db74">/</span>$APPNAME<span style="color:#e6db74">.app&#34;</span> -o <span style="color:#e6db74">&#34;</span>$OUTPUTDIR<span style="color:#e6db74">/</span>$APPNAME<span style="color:#e6db74">.ipa&#34;</span> -sign <span style="color:#e6db74">&#34;</span>$DEVELOPER_NAME<span style="color:#e6db74">&#34;</span> -embed <span style="color:#e6db74">&#34;</span>$PROVISIONING_PROFILE<span style="color:#e6db74">&#34;</span>
+
+API_TOKEN<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ZZZZZZZZZZZZZZ&#34;</span>
+TEAM_TOKEN<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;YYYYYYYYYYYYYY&#34;</span>
+RELEASE_NOTES<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;TBD&#34;</span>
+
+<span style="color:#75715e"># remove the old zipped dSYM</span>
+rm -rf <span style="color:#e6db74">&#34;</span>$OUTPUTDIR<span style="color:#e6db74">/</span>$APPNAME<span style="color:#e6db74">.app.dSYM.zip&#34;</span>
+<span style="color:#75715e"># zip up the new dSYM, we must cd to where the dSYM is or the zip command will zip up tons of intermediate dirs</span>
+cd $OUTPUTDIR
+zip -r -9 <span style="color:#e6db74">&#34;</span>$OUTPUTDIR<span style="color:#e6db74">/</span>$APPNAME<span style="color:#e6db74">.app.dSYM.zip&#34;</span> <span style="color:#e6db74">&#34;</span>$APPNAME<span style="color:#e6db74">.app.dSYM&#34;</span>
+
+curl http://testflightapp.com/api/builds.json <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  -F file<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;@</span>$OUTPUTDIR<span style="color:#e6db74">/</span>$APPNAME<span style="color:#e6db74">.ipa&#34;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  -F dsym<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;@</span>$OUTPUTDIR<span style="color:#e6db74">/</span>$APPNAME<span style="color:#e6db74">.app.dSYM.zip&#34;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  -F api_token<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$API_TOKEN<span style="color:#e6db74">&#34;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  -F team_token<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$TEAM_TOKEN<span style="color:#e6db74">&#34;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  -F notes<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$RELEASE_NOTES<span style="color:#e6db74">&#34;</span> -v
+
+echo <span style="color:#e6db74">&#34;********************&#34;</span>
+echo <span style="color:#e6db74">&#34;*    Cleaning up   *&#34;</span>
+echo <span style="color:#e6db74">&#34;********************&#34;</span>
+echo $BUILDDIR
+rm -Rf <span style="color:#e6db74">&#34;</span>$BUILDDIR<span style="color:#e6db74">&#34;</span>
+</code></pre></div><p>Also, you might need to do this just before signing, in order to unlock the keychain:</p>
+<pre><code>security unlock-keychain -p YOUR_PASSWORD &quot;$HOME/Library/Keychains/login.keychain&quot;
+</code></pre>
+<p>The trick, for me, is that I keep all of my projects in my Dropbox folder.  I&rsquo;d prefer not to have my build directories live in there, where they&rsquo;ll be muddling with files a bunch, so I have my DerivedData actually spit out into ~/build instead.  (I somehow got this to work through Xcode, too, though I now have no friggin&rsquo; clue how.)</p>
+<p>I&rsquo;ve also got this AppleScript hooked up to fire in Messages on message received events.  It checks against who sent the message in order to only fire the script if I&rsquo;ve asked it to do work.  It&rsquo;d be kind of cool to have a smarter whitelist, but for now, this is good enough.  I&rsquo;ve tried making it a bit smarter to clear out the unread badge count, but my script-fu is not quite strong enough.  Consider it an exercise for the reader!</p>
+<pre><code>using terms from application &quot;Messages&quot;
+	
+    on message received theMessage from theBuddy for theChat
+        -- display dialog (theBuddy's name as string)
+        set whoDidIt to full name of theBuddy
+        -- display alert whoDidIt &amp; who &amp; theMessage &amp; huh
+        if whoDidIt is equal to &quot;Jim Truher&quot; then
+            tell application &quot;Terminal&quot;
+                activate
+                do script &quot;automatedBuildAndUploadToTestflight.sh &quot; &amp; theMessage &amp; &quot;;exit&quot;
+            end tell
+        end if
+		
+    end message received
+	
+end using terms from
+</code></pre>
+<p>After using this system for a few weeks, it&rsquo;s occurred to me that the really neat, useful part about this whole workflow is that I can end up pushing TestFlight builds a hell of a lot more easily now than I could before.  It&rsquo;s really pretty fantastic.</p>
           
         </div>
 
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2012/11/06/buildiness/">Read more →</a>
-        </div>
         
       </div>
     
@@ -420,18 +536,15 @@ Every UIView has what’s called a transform - the linear algebra explanation is
         
 
         <div class="post-content">
-          
-          
-          A few months after my son was born (this would have been September, 2011), circumstances dictated that my office become a guest bedroom once more. This really was a great thing, because it meant that the person occupying it was helping life not devolve into some kind of horror flick. An interesting side-effect was that I moved my laptop into the kitchen and did most of my fun work there (the 2.
-          
+          <p>A few months after my son was born (this would have been September, 2011), circumstances dictated that my office become a guest bedroom once more.  This really was a great thing, because it meant that the person occupying it was helping life not devolve into some kind of horror flick.  An interesting side-effect was that I moved my laptop into the kitchen and did most of my fun work there (the 2.0 update for TD, at the time).</p>
+<p>This also meant that I did a fair bit of writing, too.  I actually really enjoy it, partly as a means of expressing and organizing my scattered thoughts, and partly as a measure of &ldquo;things made&rdquo;.  I like making things, and I&rsquo;m slowly starting to believe that the more things I make, the better I&rsquo;ll be at making them.</p>
+<p>Back to writing, though.  I played around briefly - three or four days, at most - on <a href="http://www.750words.com">750words.com</a>, and actually really enjoyed the experience.  Spending fifteen minutes to write 750 words was incredibly cathartic, especially given how much work-related stress I was under at the time.  It made me want to write more, which ended up making writing circle back around to a source of guilt instead.</p>
+<p>&ldquo;Guilt?!&rdquo; you say.  &ldquo;How can this possibly make you feel guilty?&rdquo;  Well, you see, I don&rsquo;t do it.  I can sit down at my desk and not write shit.  That&rsquo;s where I program, you see, or browse reddit, or do any number of things that aren&rsquo;t &ldquo;write some goddamned prose, you monkey.&rdquo;  And, yet, this is being written, right now!  How can that be?!</p>
+<p>Well, I&rsquo;m at the kitchen table right now.  Obviously.</p>
+
           
         </div>
 
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2012/11/01/ramblings/">Read more →</a>
-        </div>
         
       </div>
     
@@ -451,19 +564,23 @@ Every UIView has what’s called a transform - the linear algebra explanation is
         
 
         <div class="post-content">
-          
-          
-          The 2.0.2 was submitted last night. I decided to do the app store update in limerick form and post a more detailed list here.
-Potions now give a little bit of hunger back, depending on difficulty level. The twitter button on the main menu now redirects to halfbitsoftware.com because I’m certain nobody cares about @halfbitsoftware. Minor Twitter text formatting bug fixed. Removed a few megs of unused images and compressed existing images.
-          
+          <p>The 2.0.2 was submitted last night.  I decided to do the app store update in limerick form and post a more detailed list here.</p>
+<ul>
+<li>Potions now give a little bit of hunger back, depending on difficulty level.</li>
+<li>The twitter button on the main menu now redirects to halfbitsoftware.com because I&rsquo;m certain nobody cares about @halfbitsoftware.</li>
+<li>Minor Twitter text formatting bug fixed.</li>
+<li>Removed a few megs of unused images and compressed existing images.</li>
+<li>Added retina splash screen</li>
+<li>Fixed view screen bug.</li>
+<li>Wizards now start with more wand charges to make the early game a bit more fair.</li>
+<li>Animation fix on wand blasts.</li>
+<li>Fixed minor high scores list issue.</li>
+<li>Fixed empty name error.</li>
+</ul>
+
           
         </div>
 
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2012/10/16/2-dot-0-2-release-notes/">Read more →</a>
-        </div>
         
       </div>
     
@@ -483,18 +600,16 @@ Potions now give a little bit of hunger back, depending on difficulty level. The
         
 
         <div class="post-content">
-          
-          
-          I’ve been meaning to write this for awhile, mostly because I find it interesting seeing how other people work and figured someone might find this useful. I actually keep my task list, for the most part, in a physical journal, written with an actual pen (a fountain pen, because that’s just how I roll). It’s a system I’ve been fumbling with for almost a decade now, and it’s absolutely not perfect yet, but it’s certainly good enough for right now.
-          
+          <p>I&rsquo;ve been meaning to write this for awhile, mostly because I find it interesting seeing how other people work and figured someone might find this useful.  I actually keep my task list, for the most part, in a physical journal, written with an actual pen (a fountain pen, because that&rsquo;s just how I roll).  It&rsquo;s a system I&rsquo;ve been fumbling with for almost a decade now, and it&rsquo;s absolutely not perfect yet, but it&rsquo;s certainly good enough for right now.</p>
+<p>I pretty much do all of my todo listing and heavy thinking in a little journal.  I&rsquo;m always tempted by technical solutions, like the many, many todo list apps on iOS and OS X, but I feel like they&rsquo;ll let me do too much, too quickly.  I need something that&rsquo;ll slow me down and force me to think hard, rather than something that&rsquo;ll just let me spew thoughts uncontrollably.  Often, in the course of writing down what I have to do, I&rsquo;ll actually figure out how the hell to do it, too.  It&rsquo;s rare, but still counts as bonus awesome.</p>
+<p>This, sadly, leads to a bit of angst every 3-6 months when I start to get dissatisfied with the system.  The biggest bummer, at the moment, is that if my notebook isn&rsquo;t here, I can&rsquo;t really record anything for later, which is why I&rsquo;ve also started using Elements on iPhone and having it poke into nvALT&rsquo;s text directory, which syncs to Dropbox.  It isn&rsquo;t bad for little notes, but I don&rsquo;t think it&rsquo;s good for much else than jotting down quick notes for later digestion.</p>
+<p>My favorite pen/ink combination, thus far, is also the first pen I tried.  It&rsquo;s a boring Lamy Safari, in charcoal, with a black EF nib.  Because it&rsquo;s not black enough, I also use Sailor Nano black ink, which is an incredibly dark, durable ink.  It also flows really well, though has a tendency to clog on thinner, crappier pens.</p>
+<p>My journal of choice, because I&rsquo;m a dipshit, are those trendy, floofy moleskine journals from various reputable retailers.  I like the graph paper ones for general project tracking and todo listing, and the plain ones for when I. . .don&rsquo;t really want lines.  They&rsquo;re better for drawing, too.  Their paper is plenty good for my needs, I like the feel of them, and it&rsquo;s a cheap thrill to see the finished ones lined up, all nice and neat on my shelf.</p>
+<p>Every once in awhile, I flip through old journals, but that&rsquo;s a different post.</p>
+
           
         </div>
 
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2012/08/13/how-i-get-stuff-done/">Read more →</a>
-        </div>
         
       </div>
     
