@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Half-Bit Software</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 24 Jul 2020 12:00:00 -0700</lastBuildDate>
+    <lastBuildDate>Wed, 26 Aug 2020 17:50:04 -0700</lastBuildDate>
     
 	<atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Mediaplayer Framework 1</title>
+      <link>/posts/mediaplayer-framework-1/</link>
+      <pubDate>Wed, 26 Aug 2020 17:50:04 -0700</pubDate>
+      
+      <guid>/posts/mediaplayer-framework-1/</guid>
+      <description>I’ve been working with the MediaPlayer framework for the last couple of years, bumping my shins into its rough corners early and often. I file radars for what I find, but it always feels like shouting into the void, so I figured I might as well double-dip and write stuff over here, too!
+On today’s exciting episode: the delightful setQueueWithItemCollection: method, and how it does something I really didn’t expect.</description>
+    </item>
     
     <item>
       <title>XCBarnacle</title>

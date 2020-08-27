@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Mediaplayer Framework 1 :: Half-Bit Software</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="I’ve been working with the MediaPlayer framework for the last couple of years, bumping my shins into its rough corners early and often. I file radars for what I find, but it always feels like shouting into the void, so I figured I might as well double-dip and write stuff over here, too!
+On today’s exciting episode: the delightful setQueueWithItemCollection: method, and how it does something I really didn’t expect." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/posts/mediaplayer-framework-1/" />
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-31657590-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/blue.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="/img/favicon/blue.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  <meta name="twitter:site" content="" />
+
+<meta name="twitter:creator" content="" />
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Mediaplayer Framework 1 :: Half-Bit Software">
+<meta property="og:description" content="I’ve been working with the MediaPlayer framework for the last couple of years, bumping my shins into its rough corners early and often. I file radars for what I find, but it always feels like shouting into the void, so I figured I might as well double-dip and write stuff over here, too!
+On today’s exciting episode: the delightful setQueueWithItemCollection: method, and how it does something I really didn’t expect." />
+<meta property="og:url" content="/posts/mediaplayer-framework-1/" />
+<meta property="og:site_name" content="Mediaplayer Framework 1" />
+
+  
+    <meta property="og:image" content="/img/favicon/blue.png">
+  
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2020-08-26 17:50:04 -0700 PDT" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Half-Bit Software
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+        
+          <li><a href="/apps">Apps</a></li>
+        
+      
+        
+          <li><a href="/games">Games</a></li>
+        
+      
+        
+          <li><a href="/now">Now</a></li>
+        
+      
+        
+          <li><a href="/posts">Posts</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+      
+        <li><a href="/apps">Apps</a></li>
+      
+    
+      
+        <li><a href="/games">Games</a></li>
+      
+    
+      
+        <li><a href="/now">Now</a></li>
+      
+    
+      
+        <li><a href="/posts">Posts</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/posts/mediaplayer-framework-1/">Mediaplayer Framework 1</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2020-08-26 [Updated: 2020-08-26]
+      </span>
+    
+    
+  </div>
+
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <p>I’ve been working with the MediaPlayer framework for the last couple of years, bumping my shins into its rough corners early and often.  I file radars for what I find, but it always feels like shouting into the void, so I figured I might as well double-dip and write stuff over here, too!</p>
+<p>On today’s exciting episode: the delightful <code>setQueueWithItemCollection:</code> method, and how it does something I really didn’t expect.</p>
+<p>To make your iOS device play a song in its music library, an <code>MPMusicPlayerController</code> needs to be given some songs.  There’re a few different ways to do this, but the one I just mentioned is our huckleberry for today.  That method accepts an <code>MPMediaItemCollection</code>, which is - for our purposes - basically just an array of <code>MPMediaItem</code> objects.</p>
+<p>In Myoosic, I even do this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-objc" data-lang="objc">- (<span style="color:#66d9ef">void</span>)<span style="color:#a6e22e">setQueue:</span>(NSArray <span style="color:#f92672">&lt;</span>MPMediaItem<span style="color:#f92672">*&gt;*</span>)items {
+    MPMediaItemCollection<span style="color:#f92672">*</span> collection <span style="color:#f92672">=</span> [MPMediaItemCollection collectionWithItems:items];
+
+    [self.player setQueueWithItemCollection:collection];
+}
+</code></pre></div><p>Here’s the bit that tripped me up today: what happens if that array is empty?  After all, my <code>setQueue:</code> method just takes an array - that array could very well be empty.</p>
+<p>Well, what happens is hilarious and not at all what I expected: calling <code>setQueueWithItemCollection:</code> with an empty collection will queue every song available in your library!</p>
+<p>I don&rsquo;t know if this is what you&rsquo;d expect, but it certainly tripped me up.  It&rsquo;s easy enough to guard against an empty <code>items</code> array, but it seems strange that I&rsquo;d need to.</p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="/posts/xcbarnacle/">
+                <span class="button__text">XCBarnacle</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2020 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

@@ -179,6 +179,35 @@ if (!doNotTrack) {
     
       <div class="post on-list">
         <h1 class="post-title">
+          <a href="/posts/2016/02/26/another-luxe-tip/">Another Luxe Tip</a>
+        </h1>
+        <div class="post-meta">
+          <span class="post-date">
+            2016-02-26
+          </span>
+          
+        </div>
+
+        
+
+        
+
+        <div class="post-content">
+          <p>I didn&rsquo;t expect to write more of these, but here I am!  I wanted to document a bit of interesting behavior I found in the process of building/rebuilding a shmup.</p>
+<p>I had this cool effect for making a sprite kind of flicker and glow a bit by adding a duplicate and making it expand and contract rapidly.  I think the old way in SpriteKit used a parent/child relationship with an SKAction for the animation.  In luxe, the way I&rsquo;m doing it is by attaching a component to the base sprite.</p>
+<p>This component is fairly simple.  I build a sprite, attach it to its parent via the parent property (so moving it by hand is unnecessary), then add a few animations.  I&rsquo;ve already learned that <code>onremoved()</code> is the right place to do teardown, so I destroy the sprite in there and all&rsquo;s well, right?  Not quite.</p>
+<p>The extra wrinkle here is that I&rsquo;ve got a timer that fires after a few seconds to remove the component.  Simple and straightforward - <code>entity.remove('flicker');</code> - until I tried to run it.  There&rsquo;s a couple of annoying subtle bugs in here that made me sad.</p>
+<p>The first is the parent-child relationship built from the sprite.  The lifecycle of a sprite is this, during destroy.  First, destroy yourself, then loop through and destroy your children.  This means I&rsquo;m double-destroying my flicker sprite!  Dangit.  The solution?  Don&rsquo;t add it as a child, and manually update position in <code>update()</code>.</p>
+<p>The second is that timer.  See, there&rsquo;s a problem there, too: what happens if you kill the parent before the timer fires?  Everything gets cleaned up properly, but then you try to call <code>entity.remove('flicker')</code> and - boom, again!  Dangit.  The fix here was to save my scheduled timer and tell it to stop in <code>onremoved()</code>.  Both reasonably simple fixes, but real head-scratchers as I was working through the issues.  This isn&rsquo;t even a particularly complicated situation, but making simple mistakes really bit me in the ass.</p>
+
+          
+        </div>
+
+        
+      </div>
+    
+      <div class="post on-list">
+        <h1 class="post-title">
           <a href="/posts/2016/02/16/little-luxe-tips/">Little Luxe Tips</a>
         </h1>
         <div class="post-meta">
@@ -607,37 +636,6 @@ SUM:                             8            242             74           1101
 <p>Informal playtest feedback has been pretty helpful, too.  I&rsquo;m liking Apple&rsquo;s new TestFlight stuff.  Seems like I don&rsquo;t have to hound or hassle testers to get feedback these days, which is a pleasant surprise.</p>
 <p>Lastly, I started noodling and writing down ideas for the Next Big Scary Thing.  I don&rsquo;t know what I want to build it in, and I don&rsquo;t really know how I&rsquo;m gonna do it, but I&rsquo;m hoping to get that more nailed down in the coming weeks.  We&rsquo;ll see how it goes.  It&rsquo;s sort of procedural-ish and roguelike-y without being explicitly part of either faction.</p>
 <p>Short update, I know - I&rsquo;m still fighting stupid colds and have been majorly low on energy.  Tis the season, I guess.</p>
-
-          
-        </div>
-
-        
-      </div>
-    
-      <div class="post on-list">
-        <h1 class="post-title">
-          <a href="/posts/2015/02/01/periodic-update-2-1-2015/">Periodic Update: 2-1-2015</a>
-        </h1>
-        <div class="post-meta">
-          <span class="post-date">
-            2015-02-01
-          </span>
-          
-        </div>
-
-        
-
-        
-
-        <div class="post-content">
-          <p>This week was busy, so I&rsquo;ll keep this brief.  Did a bit more work on sounds for Bullet Heck and threw in music, too.  Did a bitcrusher pass against it to make things nice and crunchy, but might&rsquo;ve taken it a bit too far.  Will probably tweak it more.</p>
-<p>Not quite feature complete yet, but getting there.  I&rsquo;ve got a few more things I want to add before calling it done enough.  Someday it might even come out!</p>
-<p>That&rsquo;ll be nice.</p>
-<p>Oh.  I guess the other thing that&rsquo;s going on is that I&rsquo;m getting pretty fed-up with SpriteKit and being stuck on Mac/iOS.  I like obj-c (yes, I&rsquo;m a crazy person) and I&rsquo;m pretty good at using it, but it&rsquo;s really limiting in terms of what I can make.  I can&rsquo;t do 4-player couch party games, and I&rsquo;d like to.  There are restrictions with their graphics engine that are starting to piss me off, too.  See:</p>
-<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
-<p>That&rsquo;s pretty crappy.  When does it make sense to do shadows like that?  I&rsquo;d have to do raycasting and silly tricks with zPosition to make it work the way I want to, and ugh.  I don&rsquo;t really have enough time available to spend it fighting with my tools.</p>
-<p>Which means I&rsquo;m kind of in a holding pattern while I fumble and fiddle with a few new technologies.  Unity&rsquo;s on the list just because everyone&rsquo;s always goddamned talking about it, as is HaxeFlixel and snowkit.  Both look neat, and both let me deploy anywhere.</p>
-<p>Shit.  Maybe I&rsquo;ll end up making games for Android after all.  Brave new world, huh?</p>
 
           
         </div>

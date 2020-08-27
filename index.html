@@ -179,6 +179,41 @@ if (!doNotTrack) {
     
       <div class="post on-list">
         <h1 class="post-title">
+          <a href="/posts/mediaplayer-framework-1/">Mediaplayer Framework 1</a>
+        </h1>
+        <div class="post-meta">
+          <span class="post-date">
+            2020-08-26
+          </span>
+          
+        </div>
+
+        
+
+        
+
+        <div class="post-content">
+          <p>I’ve been working with the MediaPlayer framework for the last couple of years, bumping my shins into its rough corners early and often.  I file radars for what I find, but it always feels like shouting into the void, so I figured I might as well double-dip and write stuff over here, too!</p>
+<p>On today’s exciting episode: the delightful <code>setQueueWithItemCollection:</code> method, and how it does something I really didn’t expect.</p>
+<p>To make your iOS device play a song in its music library, an <code>MPMusicPlayerController</code> needs to be given some songs.  There’re a few different ways to do this, but the one I just mentioned is our huckleberry for today.  That method accepts an <code>MPMediaItemCollection</code>, which is - for our purposes - basically just an array of <code>MPMediaItem</code> objects.</p>
+<p>In Myoosic, I even do this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-objc" data-lang="objc">- (<span style="color:#66d9ef">void</span>)<span style="color:#a6e22e">setQueue:</span>(NSArray <span style="color:#f92672">&lt;</span>MPMediaItem<span style="color:#f92672">*&gt;*</span>)items {
+    MPMediaItemCollection<span style="color:#f92672">*</span> collection <span style="color:#f92672">=</span> [MPMediaItemCollection collectionWithItems:items];
+
+    [self.player setQueueWithItemCollection:collection];
+}
+</code></pre></div><p>Here’s the bit that tripped me up today: what happens if that array is empty?  After all, my <code>setQueue:</code> method just takes an array - that array could very well be empty.</p>
+<p>Well, what happens is hilarious and not at all what I expected: calling <code>setQueueWithItemCollection:</code> with an empty collection will queue every song available in your library!</p>
+<p>I don&rsquo;t know if this is what you&rsquo;d expect, but it certainly tripped me up.  It&rsquo;s easy enough to guard against an empty <code>items</code> array, but it seems strange that I&rsquo;d need to.</p>
+
+          
+        </div>
+
+        
+      </div>
+    
+      <div class="post on-list">
+        <h1 class="post-title">
           <a href="/posts/xcbarnacle/">XCBarnacle</a>
         </h1>
         <div class="post-meta">
@@ -672,35 +707,6 @@ turkey.add(new TargetActionComponent( function() { trace(&quot;I'm a turkey!&quo
 </code></pre><p>The neat thing, and something I found pretty useful, is being able to rebind your target actions after creation.  That ends up looking something like this:</p>
 <pre><code>t.get('targetAction').mouse_up_action = function() { trace(&quot;Gobble gobble gobble!&quot;); };
 </code></pre><p>The obvious next step is adding more triggers and actions for various input events.  Touch events are a good thing to consider, as well as down-events, too - great for juicy, depressable buttons!</p>
-
-          
-        </div>
-
-        
-      </div>
-    
-      <div class="post on-list">
-        <h1 class="post-title">
-          <a href="/posts/2016/02/26/another-luxe-tip/">Another Luxe Tip</a>
-        </h1>
-        <div class="post-meta">
-          <span class="post-date">
-            2016-02-26
-          </span>
-          
-        </div>
-
-        
-
-        
-
-        <div class="post-content">
-          <p>I didn&rsquo;t expect to write more of these, but here I am!  I wanted to document a bit of interesting behavior I found in the process of building/rebuilding a shmup.</p>
-<p>I had this cool effect for making a sprite kind of flicker and glow a bit by adding a duplicate and making it expand and contract rapidly.  I think the old way in SpriteKit used a parent/child relationship with an SKAction for the animation.  In luxe, the way I&rsquo;m doing it is by attaching a component to the base sprite.</p>
-<p>This component is fairly simple.  I build a sprite, attach it to its parent via the parent property (so moving it by hand is unnecessary), then add a few animations.  I&rsquo;ve already learned that <code>onremoved()</code> is the right place to do teardown, so I destroy the sprite in there and all&rsquo;s well, right?  Not quite.</p>
-<p>The extra wrinkle here is that I&rsquo;ve got a timer that fires after a few seconds to remove the component.  Simple and straightforward - <code>entity.remove('flicker');</code> - until I tried to run it.  There&rsquo;s a couple of annoying subtle bugs in here that made me sad.</p>
-<p>The first is the parent-child relationship built from the sprite.  The lifecycle of a sprite is this, during destroy.  First, destroy yourself, then loop through and destroy your children.  This means I&rsquo;m double-destroying my flicker sprite!  Dangit.  The solution?  Don&rsquo;t add it as a child, and manually update position in <code>update()</code>.</p>
-<p>The second is that timer.  See, there&rsquo;s a problem there, too: what happens if you kill the parent before the timer fires?  Everything gets cleaned up properly, but then you try to call <code>entity.remove('flicker')</code> and - boom, again!  Dangit.  The fix here was to save my scheduled timer and tell it to stop in <code>onremoved()</code>.  Both reasonably simple fixes, but real head-scratchers as I was working through the issues.  This isn&rsquo;t even a particularly complicated situation, but making simple mistakes really bit me in the ass.</p>
 
           
         </div>
