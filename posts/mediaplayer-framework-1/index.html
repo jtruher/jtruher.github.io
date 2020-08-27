@@ -39,7 +39,7 @@ if (!doNotTrack) {
 
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/img/apple-touch-icon-144-precomposed.png">
 
-  <link rel="shortcut icon" href="/img/favicon/blue.png">
+  <link rel="shortcut icon" href="/favicon.ico">
 
 
 
@@ -59,7 +59,7 @@ On today’s exciting episode: the delightful setQueueWithItemCollection: method
 <meta property="og:site_name" content="MediaPlayer Framework 1" />
 
   
-    <meta property="og:image" content="/img/favicon/blue.png">
+    <meta property="og:image" content="/favicon.ico">
   
 
 <meta property="og:image:width" content="2048">
@@ -182,7 +182,7 @@ On today’s exciting episode: the delightful setQueueWithItemCollection: method
         <p>I’ve been working with the MediaPlayer framework for the last couple of years, bumping my shins into its rough corners early and often.  I file radars for what I find, but it always feels like shouting into the void, so I figured I might as well double-dip and write stuff over here, too!</p>
 <p>On today’s exciting episode: the delightful <code>setQueueWithItemCollection:</code> method, and how it does something I really didn’t expect.</p>
 <p>To make your iOS device play a song in its music library, an <code>MPMusicPlayerController</code> needs to be given some songs.  There’re a few different ways to do this, but the one I just mentioned is our huckleberry for today.  That method accepts an <code>MPMediaItemCollection</code>, which is - for our purposes - basically just an array of <code>MPMediaItem</code> objects.</p>
-<p>In Myoosic, I even (basically) do this:</p>
+<p>In <a href="https://apps.apple.com/us/app/myoosic/id1460547592">Myoosic</a>, I even (basically) do this:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-objectivec" data-lang="objectivec">- (<span style="color:#66d9ef">void</span>)<span style="color:#a6e22e">setQueue:</span>(NSArray <span style="color:#f92672">&lt;</span>MPMediaItem<span style="color:#f92672">*&gt;*</span>)items {
     MPMediaItemCollection<span style="color:#f92672">*</span> c <span style="color:#f92672">=</span> [MPMediaItemCollection collectionWithItems:items];
 
