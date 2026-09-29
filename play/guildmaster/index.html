@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Guildmaster</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* style.css stretches the canvas to the window (object-fit: fill). A resizable
+   game tracks the window anyway; a fixed-size one keeps its aspect ratio. */
+html body #canvas { object-fit: contain !important; image-rendering: pixelated; outline: none; }
+</style>
+</head>
+<body>
+<canvas id="canvas" tabindex="0"></canvas>
+<div id="spinner" class="pending"></div>
+<script src="keys.js"></script>
+<script src="webgl.js"></script>
+<script src="stats.js"></script>
+<script src="player.js?g=guildmaster-9778853d.love"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+<!doctype html><html lang=en-US><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Luxe status bar · Half-Bit Software</title><meta name=description content="Another in a long series of brief tips! If you&rsquo;d like to hide the status bar on iOS (unconfirmed, so far, for Android), just set fullscreen to true in …"><meta name=author content="Jim Truher"><link rel=canonical href=https://halfbitsoftware.com/blog/2016/03/25/luxe-status-bar/><link rel=icon href=/favicon.ico><link rel=stylesheet href=/css/site.css><link rel=alternate type=application/atom+xml title="Half-Bit Software" href=https://halfbitsoftware.com/atom.xml></head><body><header class=site-header><a class=site-title href=/>Half-Bit Software</a><nav><a href=/blog/ aria-current=page>Blog</a>
+<a href=/play/>Play</a>
+<a href=/games/>Games</a>
+<a href=/apps/>Apps</a>
+<a href=/about/>About</a></nav></header><main><article><h1>Luxe status bar</h1><p class=meta><time datetime=2016-03-25>March 25, 2016</time> ·
+<a href=/categories/luxe/>Luxe</a></p><div class=prose><p>Another in a long series of brief tips! If you&rsquo;d like to hide the status bar on iOS (unconfirmed, so far, for Android), just set fullscreen to true in <code>project.flow</code>. If you want this just for mobile devices, it&rsquo;s likely easiest to do in <code>config</code></p><pre tabindex=0><code>override function config(config:luxe.AppConfig) {
+  #if mobile
+    config.window.fullscreen = true;
+  #end
+}
+</code></pre><p>Boom! No more status bar!</p></div></article><nav class=pager><a class=next href=/blog/2016/03/01/target-action-in-luxe/>← Target-Action in Luxe</a>
+<a class=prev href=/blog/2016/04/18/lzrs-postmortem/>LZRS Postmortem →</a></nav></main><footer class=site-footer><a href=/atom.xml>Feed</a> · <a href=/privacy-policy/>Privacy</a> · © 2026 Jim Truher</footer></body></html>

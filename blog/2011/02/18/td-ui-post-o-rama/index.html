@@ -1,0 +1,58 @@
+<!doctype html><html lang=en-US><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>TD UI Post-O-Rama · Half-Bit Software</title><meta name=description content="There was an interesting discussion the other day between @madgarden, @ChronoSoft, and @Podesta1971 about user interfaces in iOS games. Well, unfortunately I …"><meta name=author content="Jim Truher"><link rel=canonical href=https://halfbitsoftware.com/blog/2011/02/18/td-ui-post-o-rama/><link rel=icon href=/favicon.ico><link rel=stylesheet href=/css/site.css><link rel=alternate type=application/atom+xml title="Half-Bit Software" href=https://halfbitsoftware.com/atom.xml></head><body><header class=site-header><a class=site-title href=/>Half-Bit Software</a><nav><a href=/blog/ aria-current=page>Blog</a>
+<a href=/play/>Play</a>
+<a href=/games/>Games</a>
+<a href=/apps/>Apps</a>
+<a href=/about/>About</a></nav></header><main><article><h1>TD UI Post-O-Rama</h1><p class=meta><time datetime=2011-02-18>February 18, 2011</time></p><div class=prose><p>There was an interesting discussion the other day between <a href=http://twitter.com/madgarden title=@madgarden>@madgarden</a>, <a href=http://www.twitter.com/ChronoSoft title=@ChronoSoft>@ChronoSoft</a>, and <a href=http://www.twitter.com/Podesta1971 title=@Podesta1971>@Podesta1971</a> about user interfaces in iOS games.  Well, unfortunately I was a little under
+the weather, and unable to give a decent response in a tweet or two.  Naturally,
+this means I&rsquo;m going to word-vomit a bit, instead.  But at least we&rsquo;ll get
+pictures, too!  Hopefully this&rsquo;ll push me to do more postmortem posts.  They
+seem like they&rsquo;d be fun to write, so we&rsquo;ll see. </p><p><img src=https://lh4.googleusercontent.com/_5O1JDvh1Go4/S25vjQ_AQGI/AAAAAAAAMDU/8uMK_xFey7c/s800/Screen%20shot%202010-02-06%20at%204.27.57%20PM.jpg alt></p><p>So, to start, here&rsquo;s a very early screen, with just a level being loaded.  It has the proper placement and size of tiles, but little else.  Lots of decisions to make!</p><p><img src=https://lh3.googleusercontent.com/_5O1JDvh1Go4/S3UaJ0iej9I/AAAAAAAAKgM/J7d9pzKwsYg/s800/Screenshot_3.jpg alt></p><p>Like, say, what to do around the edge of the screen.  A border seemed natural,
+as the original had one, and hey, why shouldn&rsquo;t mine?  This was just some simple
+photoshop filter munging, but helped to draw things together.  Also in place
+are new tiles, some of which stuck around until the very end.  Some of the
+other tiles are placeholders, though the knight also survived to the end.  Go,
+RLTiles, go!</p><p><img src=https://lh3.googleusercontent.com/_5O1JDvh1Go4/S3ZfNVmbbgI/AAAAAAAAKkE/2qN6BSb1w5s/s800/Screenshot_14.jpg alt></p><p>Adding more, now, this time with a shaded-in bottom half and a real minimap.
+ Note the pluses - those are due to drawing a square path, rather than a square
+shape.  Important distinction, one which surprised me for a little while.</p><p><img src=https://lh3.googleusercontent.com/_5O1JDvh1Go4/S7Jyd8xdhzI/AAAAAAAALM0/ezAYIR-SOGY/s800/Screenshot_64.jpg alt></p><p>Getting a lot closer now, and ready to actually discuss some of the UI ideas.
+ My first inclination was to have some kind of sliding panel system at the
+bottom of the screen, which is what those dots were meant to help distinguish.
+ Each panel would be a different color as well, helping you to figure out what
+kind of thing you were looking at. </p><p><img src=https://lh5.googleusercontent.com/_5O1JDvh1Go4/S7PMDDmFOFI/AAAAAAAALKY/63mzWmwwEIg/s800/Screenshot_76.jpg alt></p><p>Like, say, armor.  You could tap on an item to activate it, and it&rsquo;d highlight
+(in the case of equipment) or vanish (in the case of consumables).  Unfortunately,
+the sliding panels meant that people didn&rsquo;t really know that there was anything
+to do with that lower panel, which led to confusion and frustration.</p><p><img src=https://lh5.googleusercontent.com/_5O1JDvh1Go4/S-XHgM-zGeI/AAAAAAAALmc/S41w93A2VYs/s800/Screenshot_111.jpg alt></p><p>The sad part is how far I ended up getting with everything before having to
+tear all of this stuff down.  I had some neat looking gradients, and pretty
+decent-ish presentation, given how little art-time was involved.  This didn&rsquo;t
+exactly look bad, to me, and even now it isn&rsquo;t terrible, but thinking about
+it today, it definitely feels like a local maximum.  This is an example of
+the best that a simple developer can do without any outside art design or influence.
+ Be afraid!</p><p><img src=https://lh4.googleusercontent.com/_5O1JDvh1Go4/S_g9JjLFR7I/AAAAAAAALqY/zqzEWMjdYqM/s800/Screenshot_142.jpg alt></p><p>And this is what happens when you start using whatever you have available.
+ The <a href=http://lostgarden.com>lostgarden.com</a> stuff, by Daniel Cook, is super awesome and
+super free.  Find whatever art you can, slice it, dice it, and throw it in.
+ It&rsquo;s amazing how much better things look with simple borders, curved corners
+and a bit of darker, transparent gray.  Note the buttons just plastered on
+there, and how much better the paperdoll model looks than the previous, sliding
+panel/box tappy system.  Getting much better.</p><p><img src=https://lh6.googleusercontent.com/_5O1JDvh1Go4/TBQCv6VKX2I/AAAAAAAAL0Y/oabhhaZ5_t4/s800/Screenshot_175.jpg alt></p><p>And, to round this off, I&rsquo;ll finish here, with something more or less the finished
+version.  Up until now, it&rsquo;s basically been show and tell, which is fun, but
+not terrifically helpful for anyone trying to glean anything useful.  So, with
+that in mind, here&rsquo;s a list of my general thoughts and guesses.</p><ol><li><p>Make buttons look like buttons.  People need to know that something means
+&lsquo;click me&rsquo;.  Maybe it&rsquo;s got a gold border, or blinks/pulsates.  Buttons should
+feel <em>good</em> to press, even if it&rsquo;s a fake, screen button.</p></li><li><p>Rounded corners are cheap ways of making things look better.  It&rsquo;s turd-polishing
+territory, but hey.  Along those same lines, adding just little touches here
+and there can really make a surprising difference.  Darken/drop shadows, or
+make the backgrounds of touchable things darker than their surroundings, or
+even just making a font slightly larger can accumulate to make a world of difference.
+ Go look at some of the Trainyard progression for proof or inspiration - Matt
+Rix did a phenomenal job.</p></li><li><p>Iterate, iterate, iterate.  Don&rsquo;t let stupid live, or it&rsquo;ll fester, and
+you&rsquo;ll never be rid of it, because you&rsquo;ll think it&rsquo;s necessary.  It is very
+easy to trick yourself into thinking that something with a lot of time sunk
+into it needs to stick around.  Treat those as learning experiences, cull,
+and move on.  (Besides, if you&rsquo;re wrong, that&rsquo;s what version control is for,
+right?)</p></li><li><p>Keep your gameplay separate from your UI.  Start with a real game, or you&rsquo;ll
+be screwed.  You&rsquo;ll also know if your UI is good if it keeps your game as fun
+as it always was.  If you find yourself annoyed or frustrated by stupid crap
+after adding some &lsquo;great&rsquo; new feature, hey, maybe re-evaluate that feature.
+ For instance, I&rsquo;ve been pissed at my own UI for awhile - it&rsquo;s cumbersome and
+sucky to use potions/equip new gear, and generally difficult to tell what&rsquo;s
+better than what you&rsquo;ve got.</p></li></ol></div></article><nav class=pager><a class=next href=/blog/2011/02/13/sometimes/>← Sometimes. . .</a>
+<a class=prev href=/blog/2011/03/31/the-dungeon-returns/>The Dungeon Returns! →</a></nav></main><footer class=site-footer><a href=/atom.xml>Feed</a> · <a href=/privacy-policy/>Privacy</a> · © 2026 Jim Truher</footer></body></html>

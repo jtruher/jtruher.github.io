@@ -1,0 +1,87 @@
+<!doctype html><html lang=en-US><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Buildiness · Half-Bit Software</title><meta name=description content="For quite some time now, I&rsquo;ve had a bit of a wild hare about something incredibly stupid. After being pestered a few too many times about getting a …"><meta name=author content="Jim Truher"><link rel=canonical href=https://halfbitsoftware.com/blog/2012/11/06/buildiness/><link rel=icon href=/favicon.ico><link rel=stylesheet href=/css/site.css><link rel=alternate type=application/atom+xml title="Half-Bit Software" href=https://halfbitsoftware.com/atom.xml></head><body><header class=site-header><a class=site-title href=/>Half-Bit Software</a><nav><a href=/blog/ aria-current=page>Blog</a>
+<a href=/play/>Play</a>
+<a href=/games/>Games</a>
+<a href=/apps/>Apps</a>
+<a href=/about/>About</a></nav></header><main><article><h1>Buildiness</h1><p class=meta><time datetime=2012-11-06>November 6, 2012</time></p><div class=prose><p>For quite some time now, I&rsquo;ve had a bit of a wild hare about something incredibly stupid. After being pestered a few too many times about getting a TestFlight build while away from my computer, I thought, hey, it&rsquo;d be sweet if I could, from my phone, tell the damned machine to make a new build and push it up to TestFlight.</p><p>So, one weekend when I was particularly full of beans, I gave it a quick, vicious stab.</p><p>Thankfully, someone else already solved a hell of a lot of this problem. My minor contribution is a bit of AppleScript-y magic that fires a script off from an iMessage (which, in light of their reliability, was maybe not my best choice. Still, it hasn&rsquo;t missed a build so far.)</p><p>What&rsquo;s the practical use of this? For one thing, if I can keep project sizes small (let&rsquo;s say under half a meg) it ends up being faster for me to push everything up via this script, then use TestFlight to install on all of the various devices I&rsquo;m building for. All of the things I&rsquo;m working on are Universal and support iOS 5.1, so I&rsquo;ve got: a 3GS, a 4, an iPad 1, and a now-horrifically-embarrassingly out of date iPad 3 (which I adore. Seriously. It&rsquo;s what I&rsquo;ve been doing all of my blogging on).</p><p>The other, somewhat less silly part about this is that I don&rsquo;t <em>actually</em> need a computer for development. Well, sure, I need something to go compile some shit, but I don&rsquo;t actually need it with me. I was inspired by some lunatic&rsquo;s story about ditching his laptop for an iPad/linode server, and this is kind of like the poor man&rsquo;s version of that. No slight intended to Textastic (which is great) but it doesn&rsquo;t make Obj-C development as easy as Xcode. Shucks.</p><p>It&rsquo;s sure as hell good enough to muddle about, though, and learning not to depend on newfangled tools is probably a good thing for anyone to learn. It&rsquo;s also not the worst debugging feedback loop I&rsquo;ve ever worked with, though by golly, does it come close.</p><p>First, I started off using the following <a href=https://gist.github.com/2411095>GitHub gist</a>. It&rsquo;s really what&rsquo;s doing most of the heavy lifting. It&rsquo;ll clean your builds, make the project, sign with a provisioning profile, then curl it on up to TestFlight.</p><pre tabindex=0><code>#!/bin/sh
+
+# Current as working as of 2012/4/17
+# Xcode 4.3.2
+
+PROJECT_ROOT=&#34;$HOME/SomeDirWhereYourProjectLives/XXXXXXXX&#34;
+
+WORKSPACE=&#34;$PROJECT_ROOT/XXXXXXXX.xcodeproj/project.xcworkspace&#34;
+CONFIG=&#34;AdHoc&#34;
+SCHEME=&#34;XXXXXXXX&#34;
+SDK=&#34;iphoneos&#34;
+TARGET=&#34;XXXXXXXX&#34;
+BUILDDIR=&#34;$HOME/build$TARGET&#34;
+OUTPUTDIR=&#34;$BUILDDIR/AdHoc-iphoneos&#34;
+APPNAME=&#34;XXXXXXXX&#34;
+DEVELOPER_NAME=&#34;John Doe (PRTG45V3X)&#34;
+PROVISIONING_PROFILE=&#34;$PROJECT_ROOT/XXXXXXXX.mobileprovision&#34;
+
+echo $BUILDDIR
+
+cd $PROJECT_ROOT
+
+echo &#34;********************&#34;
+echo &#34;*     Cleaning     *&#34;
+echo &#34;********************&#34;
+xcodebuild -alltargets clean
+
+# echo &#34;********************&#34;
+# echo &#34;*     Archiving     *&#34;
+# echo &#34;********************&#34;
+# xcodebuild -workspace $WORKSPACE -scheme $SCHEME archive
+
+echo &#34;********************&#34;
+echo &#34;*     Building     *&#34; 
+echo &#34;********************&#34;
+xcodebuild -sdk &#34;$SDK&#34; -target $TARGET -configuration &#34;$CONFIG&#34; OBJROOT=$BUILDDIR SYMROOT=$BUILDDIR
+
+echo &#34;********************&#34;
+echo &#34;*     Signing      *&#34;
+echo &#34;********************&#34;
+xcrun -log -sdk iphoneos PackageApplication -v &#34;$OUTPUTDIR/$APPNAME.app&#34; -o &#34;$OUTPUTDIR/$APPNAME.ipa&#34; -sign &#34;$DEVELOPER_NAME&#34; -embed &#34;$PROVISIONING_PROFILE&#34;
+
+API_TOKEN=&#34;ZZZZZZZZZZZZZZ&#34;
+TEAM_TOKEN=&#34;YYYYYYYYYYYYYY&#34;
+RELEASE_NOTES=&#34;TBD&#34;
+
+# remove the old zipped dSYM
+rm -rf &#34;$OUTPUTDIR/$APPNAME.app.dSYM.zip&#34;
+# zip up the new dSYM, we must cd to where the dSYM is or the zip command will zip up tons of intermediate dirs
+cd $OUTPUTDIR
+zip -r -9 &#34;$OUTPUTDIR/$APPNAME.app.dSYM.zip&#34; &#34;$APPNAME.app.dSYM&#34;
+
+curl http://testflightapp.com/api/builds.json \
+  -F file=&#34;@$OUTPUTDIR/$APPNAME.ipa&#34; \
+  -F dsym=&#34;@$OUTPUTDIR/$APPNAME.app.dSYM.zip&#34; \
+  -F api_token=&#34;$API_TOKEN&#34; \
+  -F team_token=&#34;$TEAM_TOKEN&#34; \
+  -F notes=&#34;$RELEASE_NOTES&#34; -v
+
+echo &#34;********************&#34;
+echo &#34;*    Cleaning up   *&#34;
+echo &#34;********************&#34;
+echo $BUILDDIR
+rm -Rf &#34;$BUILDDIR&#34;
+</code></pre><p>Also, you might need to do this just before signing, in order to unlock the keychain:</p><pre><code>security unlock-keychain -p YOUR_PASSWORD &quot;$HOME/Library/Keychains/login.keychain&quot;
+</code></pre><p>The trick, for me, is that I keep all of my projects in my Dropbox folder. I&rsquo;d prefer not to have my build directories live in there, where they&rsquo;ll be muddling with files a bunch, so I have my DerivedData actually spit out into ~/build instead. (I somehow got this to work through Xcode, too, though I now have no friggin&rsquo; clue how.)</p><p>I&rsquo;ve also got this AppleScript hooked up to fire in Messages on message received events. It checks against who sent the message in order to only fire the script if I&rsquo;ve asked it to do work. It&rsquo;d be kind of cool to have a smarter whitelist, but for now, this is good enough. I&rsquo;ve tried making it a bit smarter to clear out the unread badge count, but my script-fu is not quite strong enough. Consider it an exercise for the reader!</p><pre><code>using terms from application &quot;Messages&quot;
+	
+	on message received theMessage from theBuddy for theChat
+		-- display dialog (theBuddy's name as string)
+		set whoDidIt to full name of theBuddy
+		-- display alert whoDidIt &amp; who &amp; theMessage &amp; huh
+		if whoDidIt is equal to &quot;Jim Truher&quot; then
+			tell application &quot;Terminal&quot;
+				activate
+				do script &quot;automatedBuildAndUploadToTestflight.sh &quot; &amp; theMessage &amp; &quot;;exit&quot;
+			end tell
+		end if
+		
+	end message received
+	
+end using terms from
+</code></pre><p>After using this system for a few weeks, it&rsquo;s occurred to me that the really neat, useful part about this whole workflow is that I can end up pushing TestFlight builds a hell of a lot more easily now than I could before. It&rsquo;s really pretty fantastic.</p></div></article><nav class=pager><a class=next href=/blog/2012/11/01/ramblings/>← Ramblings</a>
+<a class=prev href=/blog/2013/01/16/dome-rotation/>Dome Rotation →</a></nav></main><footer class=site-footer><a href=/atom.xml>Feed</a> · <a href=/privacy-policy/>Privacy</a> · © 2026 Jim Truher</footer></body></html>
