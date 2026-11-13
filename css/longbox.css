@@ -1,0 +1,35 @@
+/* /longbox/: the Long Box++ manual. Loaded by layouts/longbox/ only; colours come from site.css. */
+.manual-head { display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1.5rem; }
+.manual-head img { flex: none; width: 96px; height: 96px; }
+.manual-head h1 { margin: 0; }
+.manual-head .tagline { margin: 0.2rem 0 0; color: var(--muted); }
+
+.manual-back { display: inline-block; margin-bottom: 0.75rem; font-size: 0.95rem; text-decoration: none; }
+
+.manual .section-label { margin: 2.5rem 0 0.5rem; color: var(--muted); }
+.manual-toc { list-style: none; padding: 0; margin: 0; }
+.manual-toc li { padding: 0.6rem 0; border-top: 1px solid var(--rule); }
+.manual-toc a { font-weight: 600; text-decoration: none; }
+.manual-toc span { display: block; color: var(--muted); font-size: 0.95rem; }
+
+.manual h2 { margin-top: 2rem; font-size: 1.3rem; }
+.manual h3 { margin-top: 1.5rem; font-size: 1.05rem; }
+.manual kbd {
+  font: 0.85em/1 var(--sans);
+  padding: 0.15em 0.4em;
+  border: 1px solid var(--rule);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  background: var(--code-bg);
+  white-space: nowrap;
+}
+.manual .prose table { width: 100%; margin: 1rem 0; }
+.manual .prose td:first-child { white-space: nowrap; }
+/* A line for one platform, e.g. "On iPhone and iPad: …" */
+.manual .platform { color: var(--muted); font-size: 0.95rem; }
+.manual .todo { color: var(--accent); font-weight: 600; }
+
+@media (max-width: 30rem) {
+  .manual-head img { width: 64px; height: 64px; }
+  .manual .prose td:first-child { white-space: normal; }
+}
